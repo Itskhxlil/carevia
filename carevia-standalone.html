@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carevia — Clinical Archivist</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-lowest": "#0b0f10",
+            "surface-container-low":    "#191c1e",
+            "surface-container":        "#1d2022",
+            "surface-container-high":   "#272a2c",
+            "surface-container-highest":"#323537",
+            "surface-bright":           "#363a3b",
+            "surface-variant":          "#323537",
+            "surface-dim":              "#101415",
+            "surface-tint":             "#93ccff",
+            surface:                    "#101415",
+            background:                 "#101415",
+            primary:                    "#93ccff",
+            "primary-fixed":            "#cce5ff",
+            "primary-fixed-dim":        "#93ccff",
+            "primary-container":        "#3198dc",
+            "on-primary":               "#003351",
+            "on-primary-container":     "#002c47",
+            "on-primary-fixed":         "#001d31",
+            "on-primary-fixed-variant": "#004b73",
+            "inverse-primary":          "#006398",
+            secondary:                  "#abcae9",
+            "secondary-fixed":          "#cce5ff",
+            "secondary-fixed-dim":      "#abcae9",
+            "secondary-container":      "#2d4c66",
+            "on-secondary":             "#11334b",
+            "on-secondary-container":   "#9dbcda",
+            "on-secondary-fixed":       "#001d31",
+            "on-secondary-fixed-variant":"#2a4a63",
+            tertiary:                   "#ffb875",
+            "tertiary-fixed":           "#ffdcc0",
+            "tertiary-fixed-dim":       "#ffb875",
+            "tertiary-container":       "#d07d1c",
+            "on-tertiary":              "#4b2800",
+            "on-tertiary-container":    "#412200",
+            "on-tertiary-fixed":        "#2d1600",
+            "on-tertiary-fixed-variant":"#6b3b00",
+            error:                      "#ffb4ab",
+            "error-container":          "#93000a",
+            "on-error":                 "#690005",
+            "on-error-container":       "#ffdad6",
+            "on-surface":               "#e0e3e5",
+            "on-surface-variant":       "#bfc7d2",
+            "on-background":            "#e0e3e5",
+            "inverse-surface":          "#e0e3e5",
+            "inverse-on-surface":       "#2d3133",
+            outline:                    "#89929b",
+            "outline-variant":          "#3f4850",
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            sm:      "0.125rem",
+            md:      "0.375rem",
+            lg:      "0.25rem",
+            xl:      "0.5rem",
+            "2xl":   "0.75rem",
+            full:    "9999px",
+          },
+          fontFamily: {
+            headline: ["Manrope", "sans-serif"],
+            body:     ["Inter", "sans-serif"],
+            display:  ["Manrope", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #101415;
+      color: #e0e3e5;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-family: 'Material Symbols Outlined';
+      font-style: normal; font-weight: normal;
+      line-height: 1; display: inline-block;
+      white-space: nowrap; direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Page transition */
+    .page { display: none; }
+    .page.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3f4850; border-radius: 2px; }
+
+    /* Table row hover */
+    .patient-row:hover { background: #272a2c; }
+    .patient-row.selected { background: rgba(147,204,255,0.05); }
+
+    /* Input focus */
+    .field-input:focus {
+      outline: none;
+      border-color: #93ccff;
+      box-shadow: 0 0 0 3px rgba(147,204,255,0.15);
+    }
+
+    /* Fade in */
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .fade-in { animation: fadeIn 0.25s ease forwards; }
+
+    /* Notif dropdown */
+    .notif-dropdown { display:none; }
+    .notif-dropdown.open { display:block; }
+
+    /* Sidebar active */
+    .nav-item.active { background:rgba(147,204,255,0.1); color:#93ccff; font-weight:600; }
+    .nav-item:hover:not(.active) { background:#272a2c; color:#e0e3e5; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     PAGE 1 — REGISTER
+════════════════════════════════════════ -->
+<div id="page-register" class="page active">
+  <main class="flex-grow flex items-center justify-center p-6 sm:p-12 relative overflow-hidden">
+
+    <!-- Background blobs -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-24 -right-10 w-96 h-96 rounded-full blur-3xl" style="background:#93ccff;opacity:0.05;"></div>
+      <div class="absolute -bottom-24 -left-10 w-[30rem] h-[30rem] rounded-full blur-3xl" style="background:#abcae9;opacity:0.04;"></div>
+    </div>
+
+    <!-- Card -->
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 rounded-xl overflow-hidden relative z-10 fade-in"
+         style="background:#0b0f10; box-shadow:0 8px 40px rgba(0,0,0,0.4);">
+
+      <!-- LEFT: Branding -->
+      <div class="hidden md:flex flex-col justify-between p-12" style="background:#191c1e;">
+        <div>
+          <h1 class="text-3xl font-extrabold tracking-tight mb-2" style="color:#93ccff; font-family:Manrope,sans-serif;">Carevia</h1>
+          <p class="text-sm font-medium tracking-[0.18em] uppercase" style="color:#bfc7d2;">Clinical Archivist</p>
+        </div>
+
+        <div class="space-y-8">
+          <div class="relative rounded-xl overflow-hidden" style="height:240px;">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtoa07sJxnKchfCVVVN-E6O9HblgD5U1vmQkYcJqeet4h2--4NYcUVlQbGl_g76f-LOPEhTI3Y85KpSsAHo7o1l7_tvsZzr1g8wIb9K_ydd91UJGR6UFhgab0akJnuIOurlwJqb6knZgoBJYUP5qn5rqAAh9kswqialVHutgn8rBKkKkHS_eSzYZQDMpy4Dgkp_zddQPPqtUDKhwNHtQG8qn3ZUSDE1MCyXywLw_Lzc9ADEAYTJGX140wYgdo0gZ-XiOUaW4QE"
+              alt="Medical office"
+              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(20%) contrast(1.1);"
+            />
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold mb-3 leading-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Empowering Clinical Precision.</h2>
+            <p class="text-md leading-relaxed" style="color:#bfc7d2;">Join a network of specialized practitioners utilizing advanced archival tools for enhanced patient outcomes.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-sm font-medium" style="color:#93ccff;">
+          <span style="width:32px;height:1px;background:#93ccff;display:inline-block;"></span>
+          <span>System v4.2.0-Alpha</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Form -->
+      <div class="p-8 sm:p-16 flex flex-col justify-center">
+        <div class="mb-10">
+          <h3 class="text-2xl font-extrabold mb-2" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Doctor Registration</h3>
+          <p class="text-sm" style="color:#bfc7d2;">Please initialize your clinical workspace.</p>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Name -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider ml-1" style="color:#bfc7d2;">Full Name</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px]" style="color:#89929b;">person</span>
+              <input id="reg-name" type="text" placeholder="e.g., Dr. Elena Rossi"
+                class="field-input w-full pl-10 pr-4 py-3 text-sm font-medium rounded-xl transition-all"
+                style="background:#191c1e;border:1px solid rgba(63,72,80,0.3);color:#e0e3e5;" />
+            </div>
+          </div>
+
+          <!-- Specialty -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider ml-1" style="color:#bfc7d2;">Clinical Specialty</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px]" style="color:#89929b;">medical_services</span>
+              <select id="reg-specialty"
+                class="field-input w-full pl-10 pr-10 py-3 text-sm font-medium rounded-xl appearance-none transition-all"
+                style="background:#191c1e;border:1px solid rgba(63,72,80,0.3);color:#e0e3e5;">
+                <option value="" disabled selected>Select Specialty</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Diabetes & Endocrinology">Diabetes & Endocrinology</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Radiology">Radiology</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[20px] pointer-events-none" style="color:#89929b;">keyboard_arrow_down</span>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div id="reg-error" class="hidden flex items-center gap-2 text-xs font-medium" style="color:#ffb4ab;">
+            <span class="material-symbols-outlined text-[16px]">error</span>
+            <span>Please fill in all fields before proceeding.</span>
+          </div>
+
+          <!-- CTA -->
+          <div class="pt-2">
+            <button onclick="handleRegister()"
+              class="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-sm tracking-wide transition-all hover:opacity-90 active:scale-[0.98] group"
+              style="background:linear-gradient(to bottom, #93ccff, #3198dc);color:#003351;">
+              <span>Access Dashboard</span>
+              <span class="material-symbols-outlined text-[18px]" style="transition:transform 0.2s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-12 pt-8" style="border-top:1px solid rgba(63,72,80,0.15);">
+          <div class="flex items-start gap-3 p-4 rounded-xl" style="background:#191c1e;">
+            <span class="material-symbols-outlined text-[20px]" style="color:#93ccff;">info</span>
+            <p class="text-[11px] leading-relaxed" style="color:#bfc7d2;">
+              This session is stored in localStorage for academic use. Ensure you are on a private terminal before proceeding with clinical data entry.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="p-8 text-center">
+    <p class="text-[10px] font-medium tracking-[0.2em] uppercase" style="color:#89929b;">Carevia Health Systems © 2024</p>
+  </footer>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PAGE 2 — DASHBOARD
+════════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+
+  <!-- ── NAVBAR ── -->
+  <header class="sticky top-0 z-50" style="background:rgba(16,20,21,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(63,72,80,0.12);">
+    <div class="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+
+      <!-- Brand -->
+      <div class="flex items-center gap-3 shrink-0">
+        <span class="text-xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#93ccff;">Carevia</span>
+        <span class="hidden sm:block text-[10px] font-semibold tracking-[0.18em] uppercase" style="color:#bfc7d2;">Clinical Archivist</span>
+      </div>
+
+      <!-- Search -->
+      <div class="flex-1 max-w-sm hidden md:flex items-center gap-2 px-3 py-2 rounded-xl" style="background:#0b0f10;border:1px solid rgba(63,72,80,0.2);">
+        <span class="material-symbols-outlined text-[18px]" style="color:#89929b;">search</span>
+        <input type="text" placeholder="Search patients, records…"
+          class="w-full bg-transparent text-sm outline-none"
+          style="color:#e0e3e5;" />
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 shrink-0 relative">
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button onclick="toggleNotif()" class="relative p-2 rounded-xl transition-colors hover:bg-[#272a2c]" style="color:#bfc7d2;">
+            <span class="material-symbols-outlined text-[22px]">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style="background:#93ccff;"></span>
+          </button>
+          <div id="notif-dropdown" class="notif-dropdown absolute right-0 top-12 w-72 rounded-xl p-4 space-y-3 z-50"
+               style="background:rgba(54,58,59,0.95);backdrop-filter:blur(12px);border:1px solid rgba(63,72,80,0.2);box-shadow:0 8px 24px rgba(25,28,30,0.15);">
+            <p class="text-xs font-semibold uppercase tracking-wider" style="color:#bfc7d2;">Notifications</p>
+            <div class="flex items-start gap-3 p-2 rounded-lg cursor-pointer hover:bg-[#272a2c]">
+              <span class="material-symbols-outlined text-[18px] mt-0.5" style="color:#93ccff;">emergency</span>
+              <div><p class="text-xs" style="color:#e0e3e5;">Patient #1042 — Lab results ready</p><p class="text-[10px] mt-0.5" style="color:#89929b;">2m ago</p></div>
+            </div>
+            <div class="flex items-start gap-3 p-2 rounded-lg cursor-pointer hover:bg-[#272a2c]">
+              <span class="material-symbols-outlined text-[18px] mt-0.5" style="color:#93ccff;">schedule</span>
+              <div><p class="text-xs" style="color:#e0e3e5;">Appointment at 14:30 — Pending confirm</p><p class="text-[10px] mt-0.5" style="color:#89929b;">1h ago</p></div>
+            </div>
+            <div class="flex items-start gap-3 p-2 rounded-lg cursor-pointer hover:bg-[#272a2c]">
+              <span class="material-symbols-outlined text-[18px] mt-0.5" style="color:#93ccff;">file_present</span>
+              <div><p class="text-xs" style="color:#e0e3e5;">Radiology report uploaded</p><p class="text-[10px] mt-0.5" style="color:#89929b;">3h ago</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings -->
+        <button class="p-2 rounded-xl transition-colors hover:bg-[#272a2c]" style="color:#bfc7d2;">
+          <span class="material-symbols-outlined text-[22px]">settings</span>
+        </button>
+
+        <!-- Doctor chip -->
+        <div class="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl ml-1" style="background:#191c1e;">
+          <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background:linear-gradient(to bottom,#93ccff,#3198dc);">
+            <span class="material-symbols-outlined text-[16px]" style="color:#003351;">person</span>
+          </div>
+          <div class="hidden sm:block leading-none">
+            <p id="nav-doctor-name" class="text-xs font-semibold" style="color:#e0e3e5;">Dr. Elena Rossi</p>
+            <p id="nav-specialty" class="text-[10px]" style="color:#89929b;">Cardiology</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── BODY ── -->
+  <div class="flex flex-1 overflow-hidden" style="min-height:calc(100vh - 64px);">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-56 shrink-0 py-6 px-3 gap-1" style="background:#191c1e;border-right:1px solid rgba(63,72,80,0.1);">
+      <button class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#93ccff;">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span> Overview
+      </button>
+      <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+        <span class="material-symbols-outlined text-[20px]">person</span> Patients
+      </button>
+      <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+        <span class="material-symbols-outlined text-[20px]">event_note</span> Appointments
+      </button>
+      <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+        <span class="material-symbols-outlined text-[20px]">science</span> Lab Results
+      </button>
+      <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+        <span class="material-symbols-outlined text-[20px]">description</span> Records
+      </button>
+      <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+        <span class="material-symbols-outlined text-[20px]">monitoring</span> Analytics
+      </button>
+
+      <div class="mt-auto pt-4" style="border-top:1px solid rgba(63,72,80,0.1);">
+        <button onclick="handleLogout()" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left transition-colors" style="color:#bfc7d2;">
+          <span class="material-symbols-outlined text-[20px]">logout</span> Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto">
+      <div class="max-w-screen-xl mx-auto px-6 py-8 space-y-8 fade-in">
+
+        <!-- Page Header -->
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] mb-1" style="color:#89929b;">Clinical Workspace</p>
+            <h1 id="dash-greeting" class="text-3xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Good morning.</h1>
+            <p id="dash-date" class="text-sm mt-1" style="color:#bfc7d2;"></p>
+          </div>
+          <button class="flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm tracking-wide transition-all hover:opacity-90 active:scale-[0.98]"
+                  style="background:linear-gradient(to bottom,#93ccff,#3198dc);color:#003351;">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            New Patient Record
+          </button>
+        </div>
+
+        <!-- KPI Cards -->
+        <section>
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] mb-4" style="color:#89929b;">Today's Overview</p>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <div class="rounded-xl p-6 flex flex-col gap-4 transition-colors cursor-default" style="background:#0b0f10;" onmouseover="this.style.background='#1d2022'" onmouseout="this.style.background='#0b0f10'">
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[22px] p-2 rounded-xl" style="color:#93ccff;background:rgba(147,204,255,0.1);">group</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.1);color:#34d399;">+3.2%</span>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">1,284</p>
+                <p class="text-xs font-semibold uppercase tracking-widest mt-1" style="color:#89929b;">Total Patients</p>
+              </div>
+            </div>
+
+            <div class="rounded-xl p-6 flex flex-col gap-4 transition-colors cursor-default" style="background:#0b0f10;" onmouseover="this.style.background='#1d2022'" onmouseout="this.style.background='#0b0f10'">
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[22px] p-2 rounded-xl" style="color:#93ccff;background:rgba(147,204,255,0.1);">event_available</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.1);color:#34d399;">+2</span>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">18</p>
+                <p class="text-xs font-semibold uppercase tracking-widest mt-1" style="color:#89929b;">Appointments</p>
+              </div>
+            </div>
+
+            <div class="rounded-xl p-6 flex flex-col gap-4 transition-colors cursor-default" style="background:#0b0f10;" onmouseover="this.style.background='#1d2022'" onmouseout="this.style.background='#0b0f10'">
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[22px] p-2 rounded-xl" style="color:#93ccff;background:rgba(147,204,255,0.1);">emergency</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(255,180,171,0.1);color:#ffb4ab;">+1</span>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">3</p>
+                <p class="text-xs font-semibold uppercase tracking-widest mt-1" style="color:#89929b;">Critical Cases</p>
+              </div>
+            </div>
+
+            <div class="rounded-xl p-6 flex flex-col gap-4 transition-colors cursor-default" style="background:#0b0f10;" onmouseover="this.style.background='#1d2022'" onmouseout="this.style.background='#0b0f10'">
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[22px] p-2 rounded-xl" style="color:#93ccff;background:rgba(147,204,255,0.1);">science</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(52,211,153,0.1);color:#34d399;">-12%</span>
+              </div>
+              <div>
+                <p class="text-2xl font-extrabold tracking-tight" style="font-family:Manrope,sans-serif;color:#e0e3e5;">47</p>
+                <p class="text-xs font-semibold uppercase tracking-widest mt-1" style="color:#89929b;">Pending Labs</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Clinical Snapshots -->
+        <section>
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] mb-4" style="color:#89929b;">Clinical Snapshots</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <!-- Appointments Card -->
+            <div class="rounded-xl p-6" style="background:#191c1e;border-left:2px solid rgba(147,204,255,0.3);">
+              <div class="flex items-center gap-2 mb-6">
+                <span class="material-symbols-outlined text-[20px]" style="color:#93ccff;">calendar_today</span>
+                <h3 class="text-sm font-bold uppercase tracking-wider" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Upcoming Appointments</h3>
+              </div>
+              <div class="space-y-0">
+                <div class="flex items-center justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.15);">
+                  <div><p class="text-xs font-medium" style="color:#e0e3e5;">Amira Khalil</p><p class="text-[10px]" style="color:#89929b;">Follow-up</p></div>
+                  <span class="text-xs font-mono" style="color:#93ccff;">09:00</span>
+                </div>
+                <div class="flex items-center justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.15);">
+                  <div><p class="text-xs font-medium" style="color:#e0e3e5;">Luca Martínez</p><p class="text-[10px]" style="color:#89929b;">Consultation</p></div>
+                  <span class="text-xs font-mono" style="color:#93ccff;">10:30</span>
+                </div>
+                <div class="flex items-center justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.15);">
+                  <div><p class="text-xs font-medium" style="color:#e0e3e5;">Yuna Takahashi</p><p class="text-[10px]" style="color:#89929b;">Lab Review</p></div>
+                  <span class="text-xs font-mono" style="color:#93ccff;">13:00</span>
+                </div>
+                <div class="flex items-center justify-between py-2.5">
+                  <div><p class="text-xs font-medium" style="color:#e0e3e5;">Elias Nour</p><p class="text-[10px]" style="color:#89929b;">Post-Op Check</p></div>
+                  <span class="text-xs font-mono" style="color:#93ccff;">15:45</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Critical Alerts Card -->
+            <div class="rounded-xl p-6" style="background:#191c1e;border-left:2px solid rgba(255,180,171,0.3);">
+              <div class="flex items-center gap-2 mb-6">
+                <span class="material-symbols-outlined text-[20px]" style="color:#ffb4ab;">warning</span>
+                <h3 class="text-sm font-bold uppercase tracking-wider" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Critical Alerts</h3>
+              </div>
+              <div class="space-y-0">
+                <div class="flex items-start gap-3 py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.15);">
+                  <span class="material-symbols-outlined text-[16px] mt-0.5" style="color:#ffb4ab;">emergency</span>
+                  <div><p class="text-[10px] font-mono" style="color:#ffb4ab;">PT-0134</p><p class="text-xs" style="color:#e0e3e5;">Arrhythmia — irregular ECG detected</p><p class="text-[10px] mt-0.5" style="color:#89929b;">08:14</p></div>
+                </div>
+                <div class="flex items-start gap-3 py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.15);">
+                  <span class="material-symbols-outlined text-[16px] mt-0.5" style="color:#ffb4ab;">emergency</span>
+                  <div><p class="text-[10px] font-mono" style="color:#ffb4ab;">PT-0042</p><p class="text-xs" style="color:#e0e3e5;">BP spike: 180/110 mmHg</p><p class="text-[10px] mt-0.5" style="color:#89929b;">09:02</p></div>
+                </div>
+                <div class="flex items-start gap-3 py-2.5">
+                  <span class="material-symbols-outlined text-[16px] mt-0.5" style="color:#ffb4ab;">emergency</span>
+                  <div><p class="text-[10px] font-mono" style="color:#ffb4ab;">PT-0218</p><p class="text-xs" style="color:#e0e3e5;">INR out of therapeutic range</p><p class="text-[10px] mt-0.5" style="color:#89929b;">09:45</p></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor Profile Card -->
+            <div class="rounded-xl p-6" style="background:#191c1e;border-left:2px solid rgba(147,204,255,0.3);">
+              <div class="flex items-center gap-2 mb-6">
+                <span class="material-symbols-outlined text-[20px]" style="color:#93ccff;">badge</span>
+                <h3 class="text-sm font-bold uppercase tracking-wider" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Clinical Profile</h3>
+              </div>
+              <div class="space-y-0">
+                <div class="flex justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.12);">
+                  <span class="text-xs font-semibold uppercase tracking-wider" style="color:#89929b;">Physician</span>
+                  <span id="profile-name" class="text-sm font-medium text-right" style="color:#e0e3e5;">—</span>
+                </div>
+                <div class="flex justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.12);">
+                  <span class="text-xs font-semibold uppercase tracking-wider" style="color:#89929b;">Specialty</span>
+                  <span id="profile-specialty" class="text-sm font-medium text-right" style="color:#e0e3e5;">—</span>
+                </div>
+                <div class="flex justify-between py-2.5" style="border-bottom:1px solid rgba(63,72,80,0.12);">
+                  <span class="text-xs font-semibold uppercase tracking-wider" style="color:#89929b;">License</span>
+                  <span class="text-sm font-mono text-right" style="color:#93ccff;">MD-2024-AL</span>
+                </div>
+                <div class="flex justify-between py-2.5">
+                  <span class="text-xs font-semibold uppercase tracking-wider" style="color:#89929b;">System</span>
+                  <span class="text-sm font-mono text-right" style="color:#93ccff;">v4.2.0-Alpha</span>
+                </div>
+                <div class="pt-4 flex items-center gap-2">
+                  <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full" style="background:rgba(52,211,153,0.1);color:#34d399;">Active</span>
+                  <span class="text-[10px]" style="color:#89929b;">Session verified</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Patient Table -->
+        <section>
+          <p class="text-[10px] font-semibold uppercase tracking-[0.18em] mb-4" style="color:#89929b;">Patient Registry</p>
+          <div class="rounded-xl overflow-hidden" style="background:#0b0f10;">
+
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-5" style="border-bottom:1px solid rgba(63,72,80,0.1);">
+              <div>
+                <h3 class="text-sm font-bold uppercase tracking-wider" style="font-family:Manrope,sans-serif;color:#e0e3e5;">Patient Registry</h3>
+                <p id="patient-count" class="text-xs mt-0.5" style="color:#89929b;">8 records</p>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-2 rounded-xl w-full sm:w-64" style="background:#191c1e;border:1px solid rgba(63,72,80,0.2);">
+                <span class="material-symbols-outlined text-[16px]" style="color:#89929b;">search</span>
+                <input id="patient-search" type="text" placeholder="Filter patients…"
+                  oninput="filterPatients()"
+                  class="w-full bg-transparent text-sm outline-none"
+                  style="color:#e0e3e5;" />
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr style="background:#191c1e;">
+                    <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.05em] cursor-pointer" style="color:#89929b;" onclick="sortTable('id')">Patient ID</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.05em] cursor-pointer" style="color:#89929b;" onclick="sortTable('name')">Name</th>
+                    <th class="px-6 py-3 text-right text-[10px] font-semibold uppercase tracking-[0.05em] cursor-pointer" style="color:#89929b;" onclick="sortTable('age')">Age</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.05em] cursor-pointer" style="color:#89929b;" onclick="sortTable('diagnosis')">Diagnosis</th>
+                    <th class="px-6 py-3 text-right text-[10px] font-semibold uppercase tracking-[0.05em] cursor-pointer" style="color:#89929b;" onclick="sortTable('lastVisit')">Last Visit</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.05em]" style="color:#89929b;">Status</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.05em]" style="color:#89929b;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="patient-tbody"></tbody>
+              </table>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 flex items-center justify-between" style="border-top:1px solid rgba(63,72,80,0.1);">
+              <p id="table-footer" class="text-[11px]" style="color:#89929b;"></p>
+              <button class="text-xs font-medium flex items-center gap-1 transition-colors hover:opacity-70" style="color:#93ccff;">
+                Export Registry <span class="material-symbols-outlined text-[14px]">download</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <div class="flex items-start gap-3 p-4 rounded-xl" style="background:#191c1e;">
+          <span class="material-symbols-outlined text-[20px]" style="color:#93ccff;">info</span>
+          <p class="text-[11px] leading-relaxed" style="color:#bfc7d2;">
+            This workspace is intended for academic demonstration. Data is stored locally and does not represent real patient information.
+          </p>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+  /* ── Patient Data ── */
+  const PATIENTS = [
+    { id:"PT-0042", name:"Amira Khalil",    age:34, diagnosis:"Hypertension",         lastVisit:"2024-09-10", status:"Active"     },
+    { id:"PT-0091", name:"Luca Martínez",   age:58, diagnosis:"Type 2 Diabetes",      lastVisit:"2024-09-08", status:"Stable"     },
+    { id:"PT-0134", name:"Sofia Andersen",  age:27, diagnosis:"Arrhythmia",           lastVisit:"2024-09-09", status:"Critical"   },
+    { id:"PT-0177", name:"James Okafor",    age:45, diagnosis:"Chronic Migraine",     lastVisit:"2024-08-29", status:"Pending"    },
+    { id:"PT-0203", name:"Yuna Takahashi",  age:62, diagnosis:"Osteoporosis",         lastVisit:"2024-09-01", status:"Stable"     },
+    { id:"PT-0218", name:"Raúl Ferreira",   age:71, diagnosis:"Atrial Fibrillation",  lastVisit:"2024-09-11", status:"Active"     },
+    { id:"PT-0255", name:"Hana Müller",     age:39, diagnosis:"Lupus SLE",            lastVisit:"2024-08-22", status:"Discharged" },
+    { id:"PT-0299", name:"Elias Nour",      age:50, diagnosis:"Coronary Artery Disease",lastVisit:"2024-09-05",status:"Active"   },
+  ];
+
+  const STATUS_STYLES = {
+    Active:     "background:rgba(52,211,153,0.1);color:#34d399;",
+    Stable:     "background:rgba(147,204,255,0.1);color:#93ccff;",
+    Critical:   "background:rgba(255,180,171,0.1);color:#ffb4ab;",
+    Pending:    "background:rgba(251,191,36,0.1);color:#fbbf24;",
+    Discharged: "background:rgba(137,146,155,0.1);color:#89929b;",
+  };
+
+  let sortKey = "name", sortAsc = true, selectedId = null;
+
+  /* ── Register ── */
+  function handleRegister() {
+    const name     = document.getElementById("reg-name").value.trim();
+    const specialty= document.getElementById("reg-specialty").value;
+    const errEl    = document.getElementById("reg-error");
+
+    if (!name || !specialty) {
+      errEl.classList.remove("hidden");
+      errEl.classList.add("flex");
+      return;
+    }
+
+    localStorage.setItem("carevia_doctor_name", name);
+    localStorage.setItem("carevia_doctor_specialty", specialty);
+    showDashboard(name, specialty);
+  }
+
+  /* ── Show Dashboard ── */
+  function showDashboard(name, specialty) {
+    document.getElementById("page-register").classList.remove("active");
+    document.getElementById("page-dashboard").classList.add("active");
+
+    document.getElementById("nav-doctor-name").textContent = name;
+    document.getElementById("nav-specialty").textContent   = specialty;
+    document.getElementById("profile-name").textContent    = name;
+    document.getElementById("profile-specialty").textContent = specialty;
+
+    const first = name.split(" ").find(w => !w.match(/^dr\.?$/i)) ?? name;
+    document.getElementById("dash-greeting").textContent = `Good morning, ${first}.`;
+    document.getElementById("dash-date").textContent = new Date().toLocaleDateString("en-GB", {
+      weekday:"long", year:"numeric", month:"long", day:"numeric"
+    });
+
+    renderTable(PATIENTS);
+  }
+
+  /* ── Logout ── */
+  function handleLogout() {
+    document.getElementById("page-dashboard").classList.remove("active");
+    document.getElementById("page-register").classList.add("active");
+  }
+
+  /* ── Notifications ── */
+  function toggleNotif() {
+    document.getElementById("notif-dropdown").classList.toggle("open");
+  }
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".relative")) {
+      document.getElementById("notif-dropdown")?.classList.remove("open");
+    }
+  });
+
+  /* ── Table render ── */
+  function renderTable(data) {
+    const tbody = document.getElementById("patient-tbody");
+    document.getElementById("patient-count").textContent = `${data.length} records`;
+    document.getElementById("table-footer").innerHTML =
+      `Showing <span style="color:#bfc7d2;font-weight:500;">${data.length}</span> of <span style="color:#bfc7d2;font-weight:500;">${PATIENTS.length}</span> patients`;
+
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-16 text-center">
+        <span class="material-symbols-outlined block mb-3 text-[40px]" style="color:#89929b;">person_search</span>
+        <p class="text-sm" style="color:#89929b;">No patients match your search.</p>
+      </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(p => {
+      const initials = p.name.split(" ").map(n=>n[0]).join("").slice(0,2);
+      const statusStyle = STATUS_STYLES[p.status] ?? STATUS_STYLES.Stable;
+      const isSelected  = selectedId === p.id;
+      return `
+      <tr class="patient-row ${isSelected ? "selected" : ""}" onclick="selectRow('${p.id}')" style="cursor:pointer;transition:background 0.15s;">
+        <td class="px-6 py-4 text-xs font-mono whitespace-nowrap" style="color:#93ccff;">${p.id}</td>
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style="background:rgba(147,204,255,0.1);">
+              <span class="text-[10px] font-bold" style="color:#93ccff;">${initials}</span>
+            </div>
+            <span class="text-sm font-medium whitespace-nowrap" style="color:#e0e3e5;">${p.name}</span>
+          </div>
+        </td>
+        <td class="px-6 py-4 text-sm text-right tabular-nums" style="color:#bfc7d2;">${p.age}</td>
+        <td class="px-6 py-4 text-sm" style="color:#bfc7d2;">${p.diagnosis}</td>
+        <td class="px-6 py-4 text-sm text-right tabular-nums whitespace-nowrap" style="color:#89929b;">${p.lastVisit}</td>
+        <td class="px-6 py-4">
+          <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full" style="${statusStyle}">${p.status}</span>
+        </td>
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-1">
+            <button class="p-1.5 rounded-lg transition-colors hover:bg-[#1d2022]" style="color:#bfc7d2;" title="View">
+              <span class="material-symbols-outlined text-[16px]">visibility</span>
+            </button>
+            <button class="p-1.5 rounded-lg transition-colors hover:bg-[#1d2022]" style="color:#bfc7d2;" title="Edit">
+              <span class="material-symbols-outlined text-[16px]">edit</span>
+            </button>
+          </div>
+        </td>
+      </tr>`;
+    }).join("");
+  }
+
+  function selectRow(id) {
+    selectedId = selectedId === id ? null : id;
+    filterPatients();
+  }
+
+  function filterPatients() {
+    const q = document.getElementById("patient-search").value.toLowerCase();
+    let data = PATIENTS.filter(p =>
+      [p.name, p.diagnosis, p.id, p.status].some(v => v.toLowerCase().includes(q))
+    );
+    data = [...data].sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      if (typeof av === "number") return sortAsc ? av - bv : bv - av;
+      return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+    });
+    renderTable(data);
+  }
+
+  function sortTable(key) {
+    if (sortKey === key) sortAsc = !sortAsc;
+    else { sortKey = key; sortAsc = true; }
+    filterPatients();
+  }
+
+  /* ── Auto-login if session exists ── */
+  window.addEventListener("DOMContentLoaded", () => {
+    const name     = localStorage.getItem("carevia_doctor_name");
+    const specialty= localStorage.getItem("carevia_doctor_specialty");
+    if (name && specialty) showDashboard(name, specialty);
+  });
+
+  /* Enter key on register form */
+  document.addEventListener("keydown", e => {
+    if (e.key === "Enter" && document.getElementById("page-register").classList.contains("active")) {
+      handleRegister();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <script>
+      try {
+        var raw = localStorage.getItem("carevia_app_settings");
+        var th = raw ? JSON.parse(raw).themeMode : "dark";
+        document.documentElement.classList.toggle("dark", th !== "light");
+      } catch (e) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carevia — Clinical Archivist</title>
+
+    <!-- Google Fonts: Poppins (Headlines) + Inter (Body) + Manrope (Display) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/main.jsx"></script>
+  </body>
+</html>

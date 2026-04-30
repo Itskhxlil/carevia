@@ -1,0 +1,509 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════
+   CAREVIA — MEDICAL TEAL / NAVY DESIGN SYSTEM
+   Dark (default) vs Light
+═══════════════════════════════════════════════ */
+@layer base {
+  html.dark {
+    /* ── Primary: Teal ── */
+    --color-primary:              13 200 175;   /* #0DC8AF */
+    --color-primary-hover:        6 177 153;    /* #06B199 */
+    --color-primary-dim:          9 150 130;    /* #099682 */
+    --color-on-primary:           255 255 255;
+    --color-primary-container:    0 70 60;
+    --color-on-primary-container: 153 240 228;
+    --color-primary-fixed:        20 184 166;
+    --color-primary-fixed-dim:    13 148 136;
+
+    /* ── Secondary: Sky Blue ── */
+    --color-secondary:            96 200 240;   /* #60C8F0 */
+    --color-on-secondary:         0 35 55;
+    --color-secondary-container:  0 60 90;
+    --color-on-secondary-container: 175 225 255;
+    --color-secondary-fixed:      147 210 255;
+    --color-secondary-fixed-dim:  96 180 230;
+    --color-on-secondary-fixed:   0 30 50;
+    --color-on-secondary-fixed-variant: 40 80 110;
+
+    /* ── Tertiary: Warm Gold ── */
+    --color-tertiary:             255 196 97;   /* #FFC461 */
+    --color-on-tertiary:          80 45 0;
+    --color-tertiary-container:   100 65 0;
+    --color-on-tertiary-container: 255 220 160;
+    --color-tertiary-fixed:       255 220 170;
+    --color-tertiary-fixed-dim:   255 190 100;
+    --color-on-tertiary-fixed:    70 38 0;
+    --color-on-tertiary-fixed-variant: 110 68 0;
+
+    /* ── Surface / Background: Deep Navy ── */
+    --color-background:           8 18 30;      /* #08121E */
+    --color-on-background:        215 230 245;
+    --color-surface:              10 22 38;     /* #0A1626 */
+    --color-on-surface:           220 235 248;
+    --color-surface-variant:      22 40 60;
+    --color-on-surface-variant:   160 190 220;
+    --color-surface-dim:          8 18 30;
+    --color-surface-bright:       28 50 75;
+    --color-surface-container-lowest: 5 14 24;
+    --color-surface-container-low:    15 30 48;
+    --color-surface-container:        20 38 58;
+    --color-surface-container-high:   28 50 74;
+    --color-surface-container-highest: 38 65 92;
+
+    /* ── Outline ── */
+    --color-outline:              90 120 155;
+    --color-outline-variant:      30 55 80;
+
+    /* ── Error ── */
+    --color-error:                255 110 110;
+    --color-on-error:             100 0 5;
+    --color-error-container:      120 20 20;
+    --color-on-error-container:   255 200 200;
+
+    /* ── Inverse ── */
+    --color-inverse-primary:      0 150 130;
+    --color-inverse-surface:      210 228 245;
+    --color-inverse-on-surface:   22 40 60;
+    --color-surface-tint:         13 200 175;
+  }
+
+  html:not(.dark) {
+    /* ── Primary: Teal ── */
+    --color-primary:              10 155 135;   /* #0A9B87 */
+    --color-primary-hover:        8 130 115;
+    --color-primary-dim:          6 110 96;
+    --color-on-primary:           255 255 255;
+    --color-primary-container:    180 245 235;
+    --color-on-primary-container: 0 60 52;
+    --color-primary-fixed:        13 200 175;
+    --color-primary-fixed-dim:    10 155 135;
+
+    /* ── Secondary: Sky Blue ── */
+    --color-secondary:            14 130 190;
+    --color-on-secondary:         255 255 255;
+    --color-secondary-container:  210 240 255;
+    --color-on-secondary-container: 0 50 80;
+    --color-secondary-fixed:      170 220 255;
+    --color-secondary-fixed-dim:  110 185 235;
+    --color-on-secondary-fixed:   0 40 65;
+    --color-on-secondary-fixed-variant: 30 75 110;
+
+    /* ── Tertiary: Warm Amber ── */
+    --color-tertiary:             220 130 0;
+    --color-on-tertiary:          255 255 255;
+    --color-tertiary-container:   255 235 190;
+    --color-on-tertiary-container: 80 45 0;
+    --color-tertiary-fixed:       255 230 180;
+    --color-tertiary-fixed-dim:   240 175 60;
+    --color-on-tertiary-fixed:    68 35 0;
+    --color-on-tertiary-fixed-variant: 110 68 0;
+
+    /* ── Surface / Background: Clean White/Cream ── */
+    --color-background:           240 248 255;
+    --color-on-background:        12 28 48;
+    --color-surface:              255 255 255;
+    --color-on-surface:           12 28 48;
+    --color-surface-variant:      225 238 250;
+    --color-on-surface-variant:   50 85 120;
+    --color-surface-dim:          230 242 252;
+    --color-surface-bright:       255 255 255;
+    --color-surface-container-lowest: 255 255 255;
+    --color-surface-container-low:    245 252 255;
+    --color-surface-container:        235 246 255;
+    --color-surface-container-high:   220 237 252;
+    --color-surface-container-highest: 205 228 248;
+
+    /* ── Outline ── */
+    --color-outline:              120 155 190;
+    --color-outline-variant:      190 215 235;
+
+    /* ── Error ── */
+    --color-error:                200 30 30;
+    --color-on-error:             255 255 255;
+    --color-error-container:      255 220 220;
+    --color-on-error-container:   120 10 10;
+
+    /* ── Inverse ── */
+    --color-inverse-primary:      13 200 175;
+    --color-inverse-surface:      18 38 60;
+    --color-inverse-on-surface:   225 240 252;
+    --color-surface-tint:         10 155 135;
+  }
+}
+
+/* ─── Material Symbols ─── */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Base Typography ─── */
+@layer base {
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-on-surface font-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Poppins", "Manrope", sans-serif;
+  }
+}
+
+/* ─── Scrollbar ─── */
+@layer utilities {
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(13, 200, 175, 0.35);
+    border-radius: 2px;
+  }
+  html:not(.dark) ::-webkit-scrollbar-thumb {
+    background: rgba(10, 155, 135, 0.3);
+  }
+}
+
+html.carevia-kbd-hints *:focus-visible {
+  outline: 2px solid rgb(var(--color-primary) / 0.5);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════
+   COMPONENT LIBRARY
+═══════════════════════════════════════════════ */
+@layer components {
+
+  /* ── Primary Button: Teal Gradient ── */
+  .carevia-btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden;
+    @apply rounded-full px-6 py-3 text-sm font-bold tracking-wide text-white;
+    background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-primary-dim)) 100%);
+    @apply shadow-[0_4px_20px_rgba(13,200,175,0.30)];
+    @apply transition-all duration-300 ease-out;
+    @apply hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(13,200,175,0.45)];
+    @apply active:translate-y-0 active:scale-[0.97];
+    border: 1px solid rgba(13, 200, 175, 0.3);
+  }
+
+  .carevia-btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.2) 50%, transparent 65%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .carevia-btn-primary:hover::after {
+    transform: translateX(100%);
+  }
+
+  /* ── Secondary Button ── */
+  .carevia-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold;
+    @apply bg-surface-container-high/60 backdrop-blur-md text-on-surface-variant;
+    border: 1px solid rgba(var(--color-outline-variant), 0.4);
+    @apply transition-all duration-300 ease-out;
+    @apply hover:text-on-surface hover:bg-surface-container-high;
+    @apply hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)];
+    @apply active:translate-y-0 active:scale-[0.97];;
+  }
+
+  .carevia-btn-secondary:hover {
+    border-color: rgba(13, 200, 175, 0.4);
+  }
+
+  /* ── Icon Button ── */
+  .carevia-btn-icon {
+    @apply relative inline-flex items-center justify-center rounded-xl p-2;
+    @apply text-on-surface-variant bg-surface-container-high/30 backdrop-blur-sm;
+    border: 1px solid rgba(var(--color-outline-variant), 0.3);
+    @apply transition-all duration-300 ease-out;
+    @apply hover:scale-110 hover:text-on-surface hover:bg-surface-container-high/70;
+    @apply active:scale-95;
+  }
+
+  .carevia-btn-icon:hover {
+    border-color: rgba(13, 200, 175, 0.4);
+    box-shadow: 0 4px 16px rgba(13, 200, 175, 0.12);
+  }
+
+  /* ── Glass Card ── */
+  .carevia-glass-card {
+    @apply rounded-2xl bg-surface-container-lowest/80 backdrop-blur-xl;
+    @apply shadow-[0_8px_40px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)];
+    border: 1px solid rgba(var(--color-outline-variant), 0.25);
+  }
+
+  html:not(.dark) .carevia-glass-card {
+    @apply bg-white/90;
+    @apply shadow-[0_4px_30px_rgba(10,155,135,0.08),inset_0_1px_0_rgba(255,255,255,0.9)];
+    border: 1px solid rgba(var(--color-outline-variant), 0.4);
+  }
+
+  /* ── Subtle Glass ── */
+  .carevia-glass-subtle {
+    @apply rounded-xl bg-surface-container-low/50 backdrop-blur-md;
+    border: 1px solid rgba(var(--color-outline-variant), 0.18);
+  }
+
+  html:not(.dark) .carevia-glass-subtle {
+    @apply bg-white/70;
+    border: 1px solid rgba(var(--color-outline-variant), 0.35);
+  }
+
+  /* ── Auth Input ── */
+  .carevia-auth-input {
+    @apply bg-surface-container-low/55 backdrop-blur-sm;
+    border: 1px solid rgba(var(--color-outline-variant), 0.3);
+    @apply transition-all duration-200;
+  }
+
+  .carevia-auth-input:focus {
+    border-color: rgba(13, 200, 175, 0.5);
+    box-shadow: 0 0 0 3px rgba(13, 200, 175, 0.12);
+  }
+
+  /* ── Profile Avatar ── */
+  .carevia-profile-avatar {
+    animation: carevia-avatar-soft 4s ease-in-out infinite;
+  }
+
+  /* ── Sidebar Nav Link ── */
+  .carevia-nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full text-left shrink-0;
+    @apply border border-transparent;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:translate-x-1;
+    @apply active:scale-[0.98];
+  }
+
+  .carevia-nav-link:hover {
+    background: rgba(13, 200, 175, 0.08);
+    border-color: rgba(13, 200, 175, 0.15);
+    color: rgb(13, 200, 175);
+  }
+
+  .carevia-nav-link-active {
+    color: rgb(13, 200, 175) !important;
+    @apply font-semibold;
+    background: rgba(13, 200, 175, 0.12);
+    border: 1px solid rgba(13, 200, 175, 0.25);
+    box-shadow: 0 0 20px rgba(13, 200, 175, 0.10), inset 0 0 20px rgba(13, 200, 175, 0.04);
+  }
+
+  /* ── Background Mesh ── */
+  .carevia-mesh-bg {
+    background:
+      radial-gradient(ellipse 70% 45% at 15% -5%, rgba(13,200,175,0.12), transparent 55%),
+      radial-gradient(ellipse 55% 35% at 88% 15%, rgba(96,200,240,0.08), transparent 50%),
+      radial-gradient(ellipse 45% 30% at 8% 92%, rgba(13,150,130,0.07), transparent 45%);
+  }
+
+  html:not(.dark) .carevia-mesh-bg {
+    background:
+      radial-gradient(ellipse 70% 45% at 15% -5%, rgba(10,155,135,0.07), transparent 55%),
+      radial-gradient(ellipse 55% 35% at 88% 15%, rgba(14,130,190,0.05), transparent 50%),
+      radial-gradient(ellipse 45% 30% at 8% 92%, rgba(13,200,175,0.04), transparent 45%);
+  }
+
+  /* ── Landing Hero Background ── */
+  .carevia-hero-bg {
+    background: linear-gradient(145deg, #062535 0%, #0A3D30 40%, #073525 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  html:not(.dark) .carevia-hero-bg {
+    background: linear-gradient(145deg, #0A4A38 0%, #0D6B55 50%, #0A5945 100%);
+  }
+
+  .carevia-hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(13,200,175,0.15), transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(96,200,240,0.10), transparent 50%);
+    pointer-events: none;
+  }
+
+  /* ── Stat Circle ── */
+  .carevia-stat-circle {
+    @apply w-28 h-28 rounded-full flex flex-col items-center justify-center;
+    background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-primary-dim)) 100%);
+    @apply shadow-[0_8px_32px_rgba(13,200,175,0.35)];
+    animation: carevia-stat-breathe 3s ease-in-out infinite;
+  }
+
+  /* ── Service Card ── */
+  .carevia-service-card {
+    @apply rounded-2xl p-5 flex flex-col gap-3 cursor-pointer;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:-translate-y-1.5;
+  }
+
+  /* ── Booking Bar ── */
+  .carevia-booking-bar {
+    @apply rounded-2xl p-5 flex flex-wrap gap-3 items-end;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  html:not(.dark) .carevia-booking-bar {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(10, 155, 135, 0.15);
+    box-shadow: 0 8px 40px rgba(10, 155, 135, 0.12);
+  }
+
+  /* ── Landing Card ── */
+  .carevia-landing-card {
+    @apply rounded-2xl p-6;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    @apply transition-all duration-300;
+    @apply hover:bg-white/10 hover:-translate-y-1;
+  }
+
+  html:not(.dark) .carevia-landing-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(10, 155, 135, 0.15);
+    @apply shadow-[0_4px_24px_rgba(10,155,135,0.08)];
+  }
+
+  /* ── Pulse rings ── */
+  .carevia-pulse-ring {
+    animation: carevia-ring-expand 2.8s ease-out infinite;
+  }
+  .carevia-pulse-ring-delayed {
+    animation: carevia-ring-expand 2.8s ease-out infinite 1.4s;
+  }
+  .carevia-hub-glow {
+    animation: carevia-hub-breathe 3.5s ease-in-out infinite;
+  }
+  .carevia-ecg-path {
+    stroke-dasharray: 64 1200;
+    animation: carevia-ecg-flow 2.6s linear infinite;
+  }
+  .carevia-data-bar {
+    animation: carevia-bar-pulse 1.4s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+  }
+
+  /* ── Floating label input ── */
+  .carevia-booking-select {
+    @apply w-full bg-transparent text-sm outline-none;
+    color: rgba(255,255,255,0.9);
+  }
+
+  html:not(.dark) .carevia-booking-select {
+    color: rgb(12, 28, 48);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════ */
+@keyframes carevia-ring-expand {
+  0%   { transform: scale(0.65); opacity: 0.55; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+@keyframes carevia-hub-breathe {
+  0%, 100% { box-shadow: 0 0 28px rgba(13,200,175,0.2); }
+  50%       { box-shadow: 0 0 52px rgba(13,200,175,0.4); }
+}
+
+@keyframes carevia-ecg-flow {
+  to { stroke-dashoffset: -1264; }
+}
+
+@keyframes carevia-bar-pulse {
+  0%   { transform: scaleY(0.45); opacity: 0.65; }
+  100% { transform: scaleY(1);    opacity: 1; }
+}
+
+@keyframes carevia-avatar-soft {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(13,200,175,0.25); }
+  50%       { transform: scale(1.03); box-shadow: 0 0 0 6px rgba(13,200,175,0.08); }
+}
+
+@keyframes carevia-stat-breathe {
+  0%, 100% { box-shadow: 0 8px 32px rgba(13,200,175,0.35); }
+  50%       { box-shadow: 0 12px 48px rgba(13,200,175,0.55); }
+}
+
+@keyframes carevia-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes carevia-shimmer {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes carevia-glow-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.85; }
+}
+
+@keyframes carevia-count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes carevia-fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes carevia-slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .carevia-btn-primary,
+  .carevia-btn-secondary,
+  .carevia-btn-icon,
+  .carevia-nav-link {
+    transition-duration: 0.01ms !important;
+  }
+  .carevia-btn-primary::after { display: none; }
+  .carevia-btn-primary:hover,
+  .carevia-btn-secondary:hover,
+  .carevia-btn-icon:hover,
+  .carevia-nav-link:hover { transform: none; }
+  .carevia-pulse-ring,
+  .carevia-pulse-ring-delayed,
+  .carevia-hub-glow,
+  .carevia-ecg-path,
+  .carevia-data-bar,
+  .carevia-stat-circle,
+  .carevia-profile-avatar { animation: none !important; }
+}

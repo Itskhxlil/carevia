@@ -1,0 +1,8 @@
+{
+  "diabetes": ["glucose", "HbA1c", "weight"],
+  "cardiology": ["blood_pressure", "heart_rate", "weight"],
+  "pulmonology": ["spo2", "peak_flow", "weight"],
+  "nephrology": ["creatinine", "egfr", "weight", "blood_pressure"],
+  "general": ["weight", "temperature", "heart_rate"],
+  "other": []
+}
