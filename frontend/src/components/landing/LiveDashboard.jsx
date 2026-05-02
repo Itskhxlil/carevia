@@ -1,0 +1,222 @@
+import React, { useState, useEffect } from "react";
+
+/* Simulated live data for the dashboard preview */
+const PATIENTS = [
+  { id: "CRV-0042", name: "Ahmad Hassan", age: 54, status: "critical", initials: "AH" },
+  { id: "CRV-0118", name: "Sarah Mitchell", age: 38, status: "stable", initials: "SM" },
+  { id: "CRV-0203", name: "Omar Benali", age: 67, status: "warning", initials: "OB" },
+  { id: "CRV-0097", name: "Leila Farouk", age: 45, status: "stable", initials: "LF" },
+];
+
+const ALERTS = [
+  { type: "critical", msg: "Ahmad H. — Glucose 186 mg/dL ↑", time: "2m ago" },
+  { type: "warning", msg: "Omar B. — BP 148/94 mmHg", time: "8m ago" },
+  { type: "info", msg: "Lab results ready for Sarah M.", time: "14m ago" },
+];
+
+const STATUS_COLORS = {
+  critical: { bg: "bg-rose-500/15", text: "text-rose-400", border: "border-rose-500/25", dot: "bg-rose-400" },
+  warning: { bg: "bg-amber-500/15", text: "text-amber-400", border: "border-amber-500/25", dot: "bg-amber-400" },
+  stable: { bg: "bg-emerald-500/15", text: "text-emerald-400", border: "border-emerald-500/25", dot: "bg-emerald-400" },
+  info: { bg: "bg-sky-500/15", text: "text-sky-400", border: "border-sky-500/25", dot: "bg-sky-400" },
+};
+
+const CHART_DATA = [40, 55, 45, 68, 52, 78, 60, 85, 72, 90, 68, 82];
+
+function AnimatedNumber({ target }) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    let frame;
+    const duration = 1500;
+    const start = performance.now();
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      setVal(Math.floor(progress * target));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [target]);
+  return val;
+}
+
+export default function LiveDashboard() {
+  const [activeAlert, setActiveAlert] = useState(0);
+
+  useEffect(() => {
+    const iv = setInterval(() => setActiveAlert((p) => (p + 1) % ALERTS.length), 3000);
+    return () => clearInterval(iv);
+  }, []);
+
+  return (
+    <div className="relative rounded-2xl overflow-hidden border border-teal-500/15 shadow-[0_50px_120px_rgba(0,0,0,0.6),0_0_0_1px_rgba(20,184,166,0.08)] bg-[#060e1a]">
+      {/* Browser chrome bar */}
+      <div className="bg-[#0a1525] border-b border-slate-700/40 px-4 py-3 flex items-center gap-3">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+          <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
+          <div className="w-3 h-3 rounded-full bg-[#28c840]" />
+        </div>
+        <div className="flex-1 mx-6 bg-[#050d18] rounded-lg px-4 py-1.5 flex items-center gap-2">
+          <span className="material-symbols-outlined text-teal-500/40 text-[14px]">lock</span>
+          <span className="text-[11px] text-slate-500 font-medium">carevia.app/dashboard/overview</span>
+        </div>
+        <div className="flex gap-2">
+          <div className="w-6 h-6 rounded-md bg-slate-800/60 flex items-center justify-center">
+            <span className="material-symbols-outlined text-slate-600 text-[12px]">refresh</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Dashboard content */}
+      <div className="p-3 sm:p-5 grid grid-cols-12 gap-3 min-h-[340px]">
+        {/* Sidebar */}
+        <div className="col-span-2 hidden md:flex flex-col gap-1.5 pr-3 border-r border-slate-800/50">
+          <div className="flex items-center gap-2 mb-3 px-2">
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
+              <span className="material-symbols-outlined text-white text-[12px]">favorite</span>
+            </div>
+            <span className="text-[10px] font-bold text-white">Carevia</span>
+          </div>
+          {[
+            { icon: "grid_view", label: "Overview", active: true },
+            { icon: "group", label: "Patients", active: false },
+            { icon: "event", label: "Schedule", active: false },
+            { icon: "science", label: "Labs", active: false },
+            { icon: "monitoring", label: "Analytics", active: false },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-[10px] font-medium transition-colors ${
+                item.active
+                  ? "bg-teal-500/10 text-teal-400 border border-teal-500/20"
+                  : "text-slate-500 hover:text-slate-400"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[14px]">{item.icon}</span>
+              <span className="hidden lg:inline">{item.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Main area */}
+        <div className="col-span-12 md:col-span-10 space-y-3">
+          {/* Stats row */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { icon: "group", label: "Total Patients", val: 247, color: "teal", change: "+12" },
+              { icon: "warning", label: "Critical Cases", val: 12, color: "rose", change: "+3" },
+              { icon: "event", label: "Today's Appts", val: 38, color: "sky", change: "5 left" },
+              { icon: "science", label: "Pending Labs", val: 94, color: "amber", change: "7 new" },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="bg-slate-800/40 rounded-xl p-3 border border-slate-700/30 hover:border-slate-600/40 transition-colors group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className={`material-symbols-outlined text-[14px] text-${s.color}-400/60`}>{s.icon}</span>
+                  <span className={`text-[8px] font-bold text-${s.color}-400/50 bg-${s.color}-500/10 px-1.5 py-0.5 rounded-full`}>
+                    {s.change}
+                  </span>
+                </div>
+                <p className={`text-xl font-black text-${s.color}-400 group-hover:text-${s.color}-300 transition-colors`}>
+                  <AnimatedNumber target={s.val} />
+                </p>
+                <p className="text-[9px] text-slate-500 mt-0.5 uppercase tracking-wider">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Charts + Alerts row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {/* Chart */}
+            <div className="sm:col-span-2 bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Patient Admissions</span>
+                <span className="text-[9px] text-teal-400/60 font-medium">Last 12 months</span>
+              </div>
+              <div className="flex items-end gap-1.5 h-24 px-1">
+                {CHART_DATA.map((h, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 rounded-t-sm bg-gradient-to-t from-teal-500/80 to-cyan-400/60 transition-all duration-500 hover:from-teal-400 hover:to-cyan-300 cursor-pointer relative group"
+                    style={{
+                      height: `${h}%`,
+                      animationDelay: `${i * 0.08}s`,
+                    }}
+                  >
+                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-slate-900 text-[8px] text-teal-300 px-1.5 py-0.5 rounded font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      {Math.round(h * 2.8)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Alerts panel */}
+            <div className="bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Live Alerts</span>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute h-full w-full rounded-full bg-rose-400 opacity-75" />
+                  <span className="relative rounded-full h-2 w-2 bg-rose-400" />
+                </span>
+              </div>
+              <div className="space-y-2">
+                {ALERTS.map((a, i) => {
+                  const c = STATUS_COLORS[a.type];
+                  return (
+                    <div
+                      key={i}
+                      className={`flex items-start gap-2 p-2 rounded-lg border transition-all duration-500 ${
+                        i === activeAlert
+                          ? `${c.bg} ${c.border} scale-[1.02]`
+                          : "border-transparent opacity-60"
+                      }`}
+                    >
+                      <div className={`w-1.5 h-1.5 rounded-full ${c.dot} mt-1 shrink-0`} />
+                      <div className="min-w-0">
+                        <p className={`text-[9px] font-semibold ${c.text} truncate`}>{a.msg}</p>
+                        <p className="text-[8px] text-slate-600">{a.time}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Patient list mini */}
+          <div className="bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recent Patients</span>
+              <span className="text-[9px] text-teal-400/60 cursor-pointer hover:text-teal-400 transition-colors">View all →</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {PATIENTS.map((p) => {
+                const c = STATUS_COLORS[p.status];
+                return (
+                  <div key={p.id} className="flex items-center gap-2 p-2 rounded-lg bg-slate-900/40 border border-slate-800/40 hover:border-slate-700/50 transition-colors">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-500/80 to-cyan-600/80 flex items-center justify-center text-[9px] font-black text-white shrink-0">
+                      {p.initials}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-bold text-white truncate">{p.name}</p>
+                      <div className="flex items-center gap-1">
+                        <span className={`text-[7px] font-bold uppercase ${c.text}`}>{p.status}</span>
+                        <span className="text-[7px] text-slate-600">· {p.age}y</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-32 bg-teal-500/[0.06] blur-3xl pointer-events-none" />
+    </div>
+  );
+}

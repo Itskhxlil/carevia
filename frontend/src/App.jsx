@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { applyThemeFromSettings } from "./services/themeSync.js";
-import AuthPage from "./components/AuthPage.jsx";
+import LandingPage from "./components/landing/LandingPage.jsx";
 import DashboardLayout from "./components/DashboardLayout.jsx";
 import OverviewPage from "./pages/OverviewPage.jsx";
 import PatientsPage from "./pages/PatientsPage.jsx";
@@ -32,7 +32,7 @@ export default function App() {
     <>
       <ThemeSync />
       <Routes>
-        <Route path="/" element={<AuthPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/ai-analysis" element={<Navigate to="/dashboard/analytics" replace />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Navigate to="overview" replace />} />

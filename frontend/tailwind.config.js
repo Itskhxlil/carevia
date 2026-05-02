@@ -4,6 +4,14 @@ const c = (name) => `rgb(var(${name}) / <alpha-value>)`;
 
 module.exports = {
   darkMode: "class",
+  safelist: [
+    // Dynamic colors used in landing page components
+    { pattern: /text-(teal|rose|sky|amber|cyan|emerald|violet|purple|blue)-(300|400|500)/ },
+    { pattern: /bg-(teal|rose|sky|amber|cyan|emerald|violet|purple|blue)-(400|500)\/(5|10|15|60|70|80)/ },
+    { pattern: /border-(teal|rose|sky|amber|cyan|emerald|violet|purple|blue)-(500)\/(15|20|25|30)/ },
+    { pattern: /from-(teal|cyan|sky)-(400|500)/ },
+    { pattern: /to-(emerald|sky|blue)-(500)/ },
+  ],
   content: [
     "./index.html",
     "./*.{js,jsx}",
