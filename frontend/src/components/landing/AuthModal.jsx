@@ -31,7 +31,7 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
   }
 
   const inputCls =
-    "w-full pl-10 pr-4 py-3 rounded-xl outline-none text-sm font-medium bg-[#0d1f30] border border-[#1e3a52] text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all";
+    "w-full pl-10 pr-4 py-3 rounded-xl outline-none text-sm font-medium bg-surface-container-low border border-outline-variant/30 text-on-surface placeholder-outline focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-all";
 
   return (
     <div
@@ -39,13 +39,13 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
-        className="relative w-full max-w-md bg-[#0a1929] rounded-2xl p-8 shadow-[0_40px_100px_rgba(0,0,0,0.7),0_0_0_1px_rgba(20,184,166,0.15)] animate-[carevia-fade-in-up_0.4s_ease-out_both]"
+        className="relative w-full max-w-md bg-surface rounded-2xl p-8 shadow-[0_40px_100px_rgba(0,0,0,0.5),0_0_0_1px_rgba(var(--color-primary),0.15)] animate-[carevia-fade-in-up_0.4s_ease-out_both]"
         role="dialog"
       >
         {/* Close */}
         <button
           type="button" onClick={onClose}
-          className="absolute top-4 right-4 bg-slate-800/60 hover:bg-slate-700/60 p-2 rounded-xl text-slate-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 bg-surface-container-high/60 hover:bg-surface-container-high/90 p-2 rounded-xl text-on-surface-variant hover:text-on-surface transition-colors"
         >
           <span className="material-symbols-outlined text-[18px]">close</span>
         </button>
@@ -56,21 +56,21 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
             <span className="material-symbols-outlined text-white text-[18px]">favorite</span>
           </div>
           <div>
-            <p className="text-base font-extrabold text-white font-headline">Carevia</p>
-            <p className="text-[10px] text-teal-400/70 uppercase tracking-wider">Clinical Archivist</p>
+            <p className="text-base font-extrabold text-on-surface font-headline">Carevia</p>
+            <p className="text-[10px] text-primary/70 uppercase tracking-wider">Clinical Archivist</p>
           </div>
         </div>
 
         {/* Tab switcher */}
-        <div className="flex bg-slate-900/60 p-1 rounded-xl mb-6 border border-slate-700/40">
+        <div className="flex bg-surface-container-low/60 p-1 rounded-xl mb-6 border border-outline-variant/30">
           {[["signin", "Sign in"], ["signup", "Create account"]].map(([m, label]) => (
             <button
               key={m} type="button"
               onClick={() => { setMode(m); setError(""); }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 ${
                 mode === m
-                  ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md"
-                  : "text-slate-400 hover:text-slate-300"
+                  ? "bg-gradient-to-r from-primary to-primary-hover text-white shadow-md"
+                  : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
               {label}
@@ -79,10 +79,10 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
         </div>
 
         <div className="mb-5">
-          <h2 className="text-lg font-bold text-white">
+          <h2 className="text-lg font-bold text-on-surface">
             {mode === "signin" ? "Welcome back, Doctor" : "Set up your workspace"}
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-on-surface-variant mt-1">
             {mode === "signin" ? "Sign in with your registered credentials." : "Your data stays securely in this browser."}
           </p>
         </div>
@@ -109,9 +109,9 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
               <input type="email" required value={email} onChange={(e) => { setEmail(e.target.value); setError(""); }} placeholder="doctor@clinic.org" className={inputCls} />
             </Field>
             <div className="space-y-1.5">
-              <label className="block text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500 ml-1">Specialty</label>
+              <label className="block text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant ml-1">Specialty</label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[18px] pointer-events-none">medical_services</span>
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">medical_services</span>
                 <select required value={specialty} onChange={(e) => { setSpecialty(e.target.value); setError(""); }} className={`${inputCls} appearance-none`}>
                   <option value="" disabled>Select specialty</option>
                   {SPECIALTIES.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -132,7 +132,7 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
           </form>
         )}
 
-        <p className="mt-5 pt-4 border-t border-slate-800 text-[10px] text-slate-600 text-center">
+        <p className="mt-5 pt-4 border-t border-outline-variant/15 text-[10px] text-outline text-center">
           Demo mode — credentials stored only in this browser session.
         </p>
       </div>
@@ -143,9 +143,9 @@ export default function AuthModal({ mode, setMode, onClose, onSuccess }) {
 function Field({ label, icon, children }) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500 ml-1">{label}</label>
+      <label className="block text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant ml-1">{label}</label>
       <div className="relative">
-        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[18px] pointer-events-none">{icon}</span>
+        <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px] pointer-events-none">{icon}</span>
         {children}
       </div>
     </div>

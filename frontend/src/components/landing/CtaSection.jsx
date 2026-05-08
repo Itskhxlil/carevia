@@ -26,7 +26,7 @@ export default function CtaSection({ openAuth }) {
           <div className="absolute inset-0 rounded-2xl bg-teal-400/20 animate-ping" style={{ animationDuration: "3s" }} />
         </div>
 
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-headline mb-5 leading-tight">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface font-headline mb-5 leading-tight">
           Ready to modernize your
           <br />
           <span className="bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">

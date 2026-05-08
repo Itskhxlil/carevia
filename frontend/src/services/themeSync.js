@@ -12,3 +12,8 @@ export function applyThemeFromSettings() {
 export function getThemeMode() {
   return loadSettings().themeMode === "light" ? "light" : "dark";
 }
+
+// Auto-sync when settings change
+if (typeof window !== "undefined") {
+  window.addEventListener("carevia-settings-updated", applyThemeFromSettings);
+}

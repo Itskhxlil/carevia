@@ -74,7 +74,7 @@ export default function ProblemsSection() {
     <section id="problems" className="py-28 relative">
       {/* Background accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-outline/30 to-transparent" />
       </div>
 
       <div className="max-w-6xl mx-auto px-6">
@@ -89,11 +89,11 @@ export default function ProblemsSection() {
           <span className="text-[11px] font-bold tracking-[0.2em] text-rose-400/80 uppercase mb-3 block">
             The Problem
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-headline mb-5">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface font-headline mb-5">
             Healthcare data is{" "}
             <span className="text-rose-400">broken</span>
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-on-surface-variant text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Doctors spend more time searching for records than treating patients. 
             Critical information falls through the cracks.
           </p>
@@ -114,11 +114,11 @@ export default function ProblemsSection() {
               <div className={`w-12 h-12 rounded-xl ${p.iconBg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                 <span className={`material-symbols-outlined text-[24px] ${p.iconColor}`}>{p.icon}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2 font-headline">{p.title}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed mb-5">{p.desc}</p>
-              <div className="pt-4 border-t border-white/[0.06]">
+              <h3 className="text-lg font-bold text-on-surface mb-2 font-headline">{p.title}</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed mb-5">{p.desc}</p>
+              <div className="pt-4 border-t border-outline-variant/10">
                 <span className={`text-2xl font-black ${p.iconColor} font-headline`}>{p.stat}</span>
-                <span className="text-[11px] text-slate-500 ml-2">{p.statLabel}</span>
+                <span className="text-[11px] text-outline ml-2">{p.statLabel}</span>
               </div>
             </motion.div>
           ))}
@@ -142,7 +142,7 @@ export default function ProblemsSection() {
           <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase mb-3 block">
             The Solution
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-headline mb-5">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface font-headline mb-5">
             Carevia{" "}
             <span className="bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
               fixes this
@@ -165,8 +165,8 @@ export default function ProblemsSection() {
               <div className={`w-12 h-12 rounded-xl ${s.iconBg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                 <span className={`material-symbols-outlined text-[24px] ${s.iconColor}`}>{s.icon}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2 font-headline">{s.title}</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">{s.desc}</p>
+              <h3 className="text-lg font-bold text-on-surface mb-2 font-headline">{s.title}</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">{s.desc}</p>
             </motion.div>
           ))}
         </div>

@@ -34,8 +34,8 @@ export default function NewPatientPage() {
     navigate("/dashboard/patients", { replace: true });
   }
 
-  const inputCls = "w-full bg-slate-950/60 border border-slate-800 rounded-2xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500/40 outline-none transition-all placeholder:text-slate-600";
-  const labelCls = "block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1.5";
+  const inputCls = "w-full bg-surface-container-low/60 border border-outline-variant/30 rounded-2xl px-4 py-3 text-sm text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all placeholder:text-outline";
+  const labelCls = "block text-[10px] font-black text-on-surface-variant uppercase tracking-widest ml-1 mb-1.5";
 
   return (
     <PageShell
@@ -45,7 +45,7 @@ export default function NewPatientPage() {
       <div className="max-w-2xl">
         <form
           onSubmit={handleSubmit}
-          className="space-y-6 bg-slate-900/40 border border-slate-800 p-6 sm:p-10 rounded-3xl shadow-xl relative overflow-hidden"
+          className="space-y-6 bg-surface/40 border border-outline-variant/30 p-6 sm:p-10 rounded-3xl shadow-xl relative overflow-hidden"
         >
           {/* Subtle decoration */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-3xl" />
@@ -128,7 +128,7 @@ export default function NewPatientPage() {
                 className={`${inputCls} appearance-none`}
               >
                 {STATUSES.map((s) => (
-                  <option key={s} value={s} className="bg-[#0a1929]">{s}</option>
+                  <option key={s} value={s} className="bg-surface">{s}</option>
                 ))}
               </select>
               <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">expand_more</span>
@@ -143,7 +143,7 @@ export default function NewPatientPage() {
             <button
               type="button"
               onClick={() => navigate("/dashboard/patients")}
-              className="flex-1 sm:flex-none px-8 py-4 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all"
+              className="flex-1 sm:flex-none px-8 py-4 bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface font-black text-xs uppercase tracking-widest rounded-2xl transition-all"
             >
               Cancel
             </button>
@@ -155,12 +155,12 @@ export default function NewPatientPage() {
            <div className="w-10 h-10 rounded-xl bg-teal-400/10 flex items-center justify-center shrink-0">
               <span className="material-symbols-outlined text-teal-400 text-[20px]">security</span>
            </div>
-           <div>
-              <p className="text-sm font-bold text-slate-200">HIPAA Data Safety</p>
-              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+            <div>
+              <p className="text-sm font-bold text-on-surface">HIPAA Data Safety</p>
+              <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">
                  All medical records created here are encrypted and stored in your local browser storage. Carevia never uploads patient data to any cloud or external server.
               </p>
-           </div>
+            </div>
         </div>
       </div>
     </PageShell>

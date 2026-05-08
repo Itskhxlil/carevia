@@ -47,7 +47,7 @@ export default function HowItWorksSection() {
           <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase mb-3 block">
             Workflow
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-headline mb-5">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface font-headline mb-5">
             Three steps to{" "}
             <span className="bg-gradient-to-r from-teal-300 to-cyan-400 bg-clip-text text-transparent">
               clinical clarity
@@ -95,7 +95,7 @@ export default function HowItWorksSection() {
                   <div className={`absolute inset-0 rounded-full bg-${step.color}-500/[0.05] blur-2xl pointer-events-none group-hover:bg-${step.color}-500/[0.1] transition-all duration-500`} />
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-3 font-headline">{step.title}</h3>
+                <h3 className="text-lg font-bold text-on-surface mb-3 font-headline">{step.title}</h3>
                 <p className="text-sm text-slate-400 leading-relaxed max-w-xs">{step.desc}</p>
               </motion.div>
             ))}

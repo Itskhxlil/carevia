@@ -22,7 +22,7 @@ export default function LandingPage() {
   const openAuth = (mode) => { setAuthMode(mode); setShowAuth(true); };
 
   return (
-    <div className="min-h-screen bg-[#050d18] text-slate-100 overflow-x-hidden font-body">
+    <div className="min-h-screen bg-background text-on-surface overflow-x-hidden font-body transition-colors duration-300">
       {/* Ambient background orbs */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[700px] h-[700px] rounded-full bg-teal-500/[0.03] blur-[120px]" />

@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { loadSettings, saveSettings } from "../services/authStorage.js";
+import { applyThemeFromSettings } from "../services/themeSync.js";
 
 export default function Navbar({ doctorName = "", specialty = "", email = "", onSignOut }) {
   const { t } = useTranslation();
   const [notifOpen, setNotifOpen] = useState(false);
   const [userOpen, setUserOpen]   = useState(false);
   const [scrolled, setScrolled]   = useState(false);
+  const [theme, setTheme]         = useState(() => loadSettings().themeMode || "dark");
   const userWrapRef = useRef(null);
 
   useEffect(() => {
@@ -24,6 +27,21 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    function onSettings() {
+      setTheme(loadSettings().themeMode || "dark");
+    }
+    window.addEventListener("carevia-settings-updated", onSettings);
+    return () => window.removeEventListener("carevia-settings-updated", onSettings);
+  }, []);
+
+  function toggleTheme() {
+    const next = theme === "dark" ? "light" : "dark";
+    saveSettings({ themeMode: next });
+    setTheme(next);
+    applyThemeFromSettings();
+    window.dispatchEvent(new CustomEvent("carevia-settings-updated"));
+  }
 
   const initials = String(doctorName || "?")
     .trim()
@@ -38,8 +56,8 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
       className={`
         sticky top-0 z-50 transition-all duration-300
         ${scrolled
-          ? "bg-[#060f1a]/95 backdrop-blur-xl border-b border-teal-500/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]"
-          : "bg-[#060f1a]/80 backdrop-blur-md border-b border-white/5"
+          ? "bg-background/95 backdrop-blur-xl border-b border-primary/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+          : "bg-background/80 backdrop-blur-md border-b border-outline-variant/15"
         }
       `}
     >
@@ -51,7 +69,7 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
             <span className="material-symbols-outlined text-white text-[18px]">favorite</span>
           </div>
           <div className="flex flex-col -space-y-1">
-            <span className="text-base font-black text-white tracking-tight font-headline">
+            <span className="text-base font-black text-on-surface tracking-tight font-headline">
               Carevia
             </span>
             <span className="text-[9px] font-bold tracking-[0.1em] text-teal-400/70 uppercase">
@@ -61,41 +79,53 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
         </Link>
 
         {/* Search */}
-        <div className="flex-1 max-w-md hidden md:flex items-center gap-3 px-4 py-2 bg-slate-900/60 border border-slate-800 rounded-xl focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500/40 transition-all duration-300">
+        <div className="flex-1 max-w-md hidden md:flex items-center gap-3 px-4 py-2 bg-surface-container-low/60 border border-outline-variant/30 rounded-xl focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-300">
           <span className="material-symbols-outlined text-slate-500 text-[18px]">search</span>
           <input
             type="text"
             placeholder={t("navbar.search") || "Search patients, records..."}
-            className="w-full bg-transparent text-sm text-slate-200 placeholder:text-slate-600 outline-none font-body"
+            className="w-full bg-transparent text-sm text-on-surface-variant placeholder:text-outline outline-none font-body"
           />
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-700 bg-slate-800 text-slate-500 text-[10px] font-mono">
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-outline-variant bg-surface-container-high text-outline text-[10px] font-mono">
             ⌘K
           </kbd>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2 shrink-0">
+          {/* Theme Toggle */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
+            aria-label="Toggle Theme"
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              {theme === "dark" ? "light_mode" : "dark_mode"}
+            </span>
+          </button>
 
           {/* Notifications */}
           <div className="relative">
             <button
               type="button"
               onClick={() => { setNotifOpen((o) => !o); setUserOpen(false); }}
-              className="w-10 h-10 rounded-xl bg-slate-900/40 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700 transition-all"
+              className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
               aria-label={t("navbar.notifications")}
             >
               <span className="material-symbols-outlined text-[20px]">notifications</span>
-              <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-teal-500 border border-[#060f1a]" />
+              <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-primary border border-background" />
             </button>
 
             {notifOpen && (
-              <div className="absolute right-0 top-12 w-72 z-50 bg-[#0a1929] border border-slate-800 rounded-2xl p-4 shadow-2xl animate-[carevia-fade-in-up_0.3s_ease-out_both]">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3 ml-1">
+              <div className="absolute right-0 top-12 w-72 z-50 bg-surface border border-outline-variant/40 rounded-2xl p-4 shadow-2xl animate-[carevia-fade-in-up_0.3s_ease-out_both]">
+                <p className="text-[10px] font-black uppercase tracking-widest text-outline mb-3 ml-1">
                   Notifications
                 </p>
                 <div className="flex flex-col items-center justify-center py-6 text-center">
-                  <span className="material-symbols-outlined text-slate-700 text-[32px] mb-2">notifications_off</span>
-                  <p className="text-xs text-slate-500">
+                  <span className="material-symbols-outlined text-outline/30 text-[32px] mb-2">notifications_off</span>
+                  <p className="text-xs text-on-surface-variant">
                     No new alerts at this time.
                   </p>
                 </div>
@@ -108,31 +138,31 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); setUserOpen((o) => !o); setNotifOpen(false); }}
-              className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900/40 hover:bg-slate-900/60 transition-all duration-300 hover:border-teal-500/30"
+              className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container-low/40 hover:bg-surface-container-low/60 transition-all duration-300 hover:border-primary/30"
             >
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center text-white text-[11px] font-black shadow-[0_0_12px_rgba(20,184,166,0.35)]">
                 {initials}
               </div>
               <div className="hidden sm:block text-left leading-tight">
-                <p className="text-xs font-bold text-white truncate max-w-[100px]">{doctorName || "Dr. User"}</p>
-                <p className="text-[9px] font-bold text-slate-500 truncate uppercase tracking-wider">{specialty || "General"}</p>
+                <p className="text-xs font-bold text-on-surface truncate max-w-[100px]">{doctorName || "Dr. User"}</p>
+                <p className="text-[9px] font-bold text-on-surface-variant truncate uppercase tracking-wider">{specialty || "General"}</p>
               </div>
-              <span className="material-symbols-outlined text-slate-500 text-[18px] hidden sm:block">expand_more</span>
+              <span className="material-symbols-outlined text-outline text-[18px] hidden sm:block">expand_more</span>
             </button>
 
             {userOpen && (
               <div
-                className="absolute right-0 top-12 w-56 z-50 py-2 bg-[#0a1929] border border-slate-800 rounded-2xl shadow-2xl animate-[carevia-fade-in-up_0.3s_ease-out_both]"
+                className="absolute right-0 top-12 w-56 z-50 py-2 bg-surface border border-outline-variant/40 rounded-2xl shadow-2xl animate-[carevia-fade-in-up_0.3s_ease-out_both]"
                 role="menu"
               >
-                <div className="px-4 py-2 mb-1 border-b border-slate-800/60">
-                   <p className="text-[9px] font-black text-slate-600 uppercase tracking-widest">{email || "clinical.workspace"}</p>
+                <div className="px-4 py-2 mb-1 border-b border-outline-variant/15">
+                   <p className="text-[9px] font-black text-outline uppercase tracking-widest">{email || "clinical.workspace"}</p>
                 </div>
                 
                 <Link
                   to="/dashboard/profile"
                   role="menuitem"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white hover:bg-teal-500/10 transition-colors"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-primary/10 transition-colors"
                   onClick={() => setUserOpen(false)}
                 >
                   <span className="material-symbols-outlined text-[20px]">account_circle</span>
@@ -141,14 +171,14 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
                 <Link
                   to="/dashboard/settings"
                   role="menuitem"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white hover:bg-teal-500/10 transition-colors"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-primary/10 transition-colors"
                   onClick={() => setUserOpen(false)}
                 >
                   <span className="material-symbols-outlined text-[20px]">tune</span>
                   Workspace Settings
                 </Link>
 
-                <div className="mt-1 pt-1 border-t border-slate-800/60">
+                <div className="mt-1 pt-1 border-t border-outline-variant/15">
                   <button
                     type="button"
                     role="menuitem"

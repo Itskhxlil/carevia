@@ -41,7 +41,7 @@ export function StatCard({ icon, label, value, delta, positive = true, color = "
       </div>
 
       <div>
-        <p className="text-2xl font-black font-headline text-white tracking-tight">
+        <p className="text-2xl font-black font-headline text-on-surface tracking-tight">
           {value}
         </p>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{label}</p>
@@ -80,7 +80,7 @@ export function MedicalCard({ title, children, icon, accent = "primary" }) {
             <span className={`material-symbols-outlined text-[20px] ${a.color}`}>{icon}</span>
           </div>
         )}
-        <h3 className="text-sm font-bold font-headline text-white uppercase tracking-wider">{title}</h3>
+        <h3 className="text-sm font-bold font-headline text-on-surface uppercase tracking-wider">{title}</h3>
       </div>
       <div className="space-y-3">{children}</div>
     </div>

@@ -46,10 +46,10 @@ export default function OverviewPage() {
               <span className="material-symbols-outlined text-rose-400 text-[24px]">emergency</span>
             </div>
             <div>
-              <p className="text-sm font-black text-white">
+              <p className="text-sm font-black text-on-surface">
                 {t("overview.criticalBanner", { count: criticalCount }) || `${criticalCount} Patients in Critical Condition`}
               </p>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-on-surface-variant mt-1">
                 {t("overview.reviewList") || "Please review their clinical summary immediately."}
               </p>
             </div>
@@ -69,10 +69,10 @@ export default function OverviewPage() {
               {t("overview.workspace") || "Clinical Workspace"}
             </p>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black font-headline text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black font-headline text-on-surface tracking-tight">
             {t("overview.greeting", { name: firstName }) || `Good day, Dr. ${firstName}`}
           </h1>
-          <p className="text-slate-500 text-sm mt-1.5 font-medium flex items-center gap-2">
+          <p className="text-on-surface-variant text-sm mt-1.5 font-medium flex items-center gap-2">
             <span className="material-symbols-outlined text-[16px]">calendar_today</span>
             {new Date().toLocaleDateString(t("langCode") === "ar" ? "ar-EG" : "en-GB", {
               weekday: "long",
@@ -92,10 +92,10 @@ export default function OverviewPage() {
       {/* Stats Grid */}
       <section>
         <div className="flex items-center justify-between mb-5">
-           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-outline">
              {t("overview.todayOverview") || "Patient Registry Health"}
            </p>
-           <div className="h-px flex-1 bg-slate-800/40 ml-4"></div>
+           <div className="h-px flex-1 bg-outline-variant/30 ml-4"></div>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <StatCard 
@@ -133,22 +133,22 @@ export default function OverviewPage() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           <MedicalCard title={t("overview.upcomingAppointments") || "Appointments"} icon="event_available" accent="secondary">
             {!settings.notifyAppointments ? (
-              <p className="text-xs text-slate-500 leading-relaxed italic">{t("overview.appointmentsOff") || "Notifications disabled in settings."}</p>
+              <p className="text-xs text-on-surface-variant leading-relaxed italic">{t("overview.appointmentsOff") || "Notifications disabled in settings."}</p>
             ) : (
               <div className="flex flex-col items-center justify-center py-6 text-center">
-                 <span className="material-symbols-outlined text-slate-800 text-[32px] mb-2">event_busy</span>
-                 <p className="text-xs text-slate-500">{t("overview.appointmentsEmpty") || "No appointments scheduled for today."}</p>
+                 <span className="material-symbols-outlined text-outline/30 text-[32px] mb-2">event_busy</span>
+                 <p className="text-xs text-on-surface-variant">{t("overview.appointmentsEmpty") || "No appointments scheduled for today."}</p>
               </div>
             )}
           </MedicalCard>
 
           <MedicalCard title={t("overview.criticalAlerts") || "Clinical Alerts"} icon="warning" accent="error">
             {!settings.notifyCriticalAlerts ? (
-              <p className="text-xs text-slate-500 leading-relaxed italic">{t("overview.criticalOff") || "Alerts are currently muted."}</p>
+              <p className="text-xs text-on-surface-variant leading-relaxed italic">{t("overview.criticalOff") || "Alerts are currently muted."}</p>
             ) : criticalRows.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-6 text-center">
-                 <span className="material-symbols-outlined text-teal-900/40 text-[32px] mb-2">check_circle</span>
-                 <p className="text-xs text-slate-500">{t("overview.criticalEmpty") || "All patients are currently stable."}</p>
+                 <span className="material-symbols-outlined text-primary/20 text-[32px] mb-2">check_circle</span>
+                 <p className="text-xs text-on-surface-variant">{t("overview.criticalEmpty") || "All patients are currently stable."}</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -163,8 +163,8 @@ export default function OverviewPage() {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[10px] font-black text-rose-500/70 tracking-widest uppercase">{p.id}</p>
-                      <p className="text-xs font-bold text-white truncate">{p.name}</p>
-                      <p className="text-[10px] text-slate-500 mt-0.5 truncate">{p.diagnosis}</p>
+                      <p className="text-xs font-bold text-on-surface truncate">{p.name}</p>
+                      <p className="text-[10px] text-on-surface-variant mt-0.5 truncate">{p.diagnosis}</p>
                     </div>
                   </Link>
                 ))}
@@ -173,13 +173,13 @@ export default function OverviewPage() {
           </MedicalCard>
 
           <MedicalCard title={t("overview.yourProfile") || "Physician Profile"} icon="badge" accent="primary">
-            <div className="bg-slate-900/60 rounded-xl p-3 border border-slate-800/60">
+            <div className="bg-surface-container-low/60 rounded-xl p-3 border border-outline-variant/30">
               <InfoRow label={t("overview.physician") || "Physician"} value={doctorName || "Dr. User"} />
               <InfoRow label={t("overview.specialty") || "Specialty"} value={specialty || "—"} />
               <InfoRow label="Access Mode" value="Local Workspace" color="teal-400" />
               <div className="pt-4 flex items-center justify-between">
                 <StatusChip status="Active" />
-                <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest flex items-center gap-1">
+                <span className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-1">
                    <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
                    Session Encrypted
                 </span>
@@ -194,8 +194,8 @@ export default function OverviewPage() {
           <span className="material-symbols-outlined text-teal-400 text-[20px]">verified_user</span>
         </div>
         <div>
-           <p className="text-sm font-bold text-slate-200">Local Privacy Shield Active</p>
-           <p className="text-xs text-slate-500 leading-relaxed mt-1">
+           <p className="text-sm font-bold text-on-surface">Local Privacy Shield Active</p>
+           <p className="text-xs text-on-surface-variant leading-relaxed mt-1">
              Your workspace is running in a local-first environment. All patient records and measurements are stored only on this device.
            </p>
         </div>

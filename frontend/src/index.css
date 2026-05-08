@@ -39,10 +39,10 @@
     --color-on-tertiary-fixed-variant: 110 68 0;
 
     /* ── Surface / Background: Deep Navy ── */
-    --color-background:           8 18 30;      /* #08121E */
-    --color-on-background:        215 230 245;
-    --color-surface:              10 22 38;     /* #0A1626 */
-    --color-on-surface:           220 235 248;
+    --color-background:           8 18 24;      /* Slightly more neutral dark */
+    --color-on-background:        153 240 228;  /* Light Teal */
+    --color-surface:              10 22 30;
+    --color-on-surface:           153 240 228;  /* Light Teal instead of off-white */
     --color-surface-variant:      22 40 60;
     --color-on-surface-variant:   160 190 220;
     --color-surface-dim:          8 18 30;
@@ -102,10 +102,10 @@
     --color-on-tertiary-fixed-variant: 110 68 0;
 
     /* ── Surface / Background: Clean White/Cream ── */
-    --color-background:           240 248 255;
-    --color-on-background:        12 28 48;
+    --color-background:           245 252 250;  /* Very light teal background */
+    --color-on-background:        0 60 52;      /* Dark Teal */
     --color-surface:              255 255 255;
-    --color-on-surface:           12 28 48;
+    --color-on-surface:           0 60 52;      /* Dark Teal instead of navy */
     --color-surface-variant:      225 238 250;
     --color-on-surface-variant:   50 85 120;
     --color-surface-dim:          230 242 252;

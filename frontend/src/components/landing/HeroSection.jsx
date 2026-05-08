@@ -64,7 +64,7 @@ export default function HeroSection({ openAuth }) {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="text-center mb-6"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.08] tracking-tight font-headline">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-on-surface leading-[1.08] tracking-tight font-headline">
             Your Patients Deserve
             <br />
             <span className="relative inline-block">
@@ -89,7 +89,7 @@ export default function HeroSection({ openAuth }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center text-slate-400 text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto"
+          className="text-center text-on-surface-variant text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl mx-auto"
         >
           Track vitals, flag critical values, and make data-informed decisions — 
           in a secure workspace built exclusively for physicians.
@@ -114,7 +114,7 @@ export default function HeroSection({ openAuth }) {
           </button>
           <button
             onClick={() => openAuth("signin")}
-            className="flex items-center gap-2 px-9 py-4 rounded-2xl text-base font-semibold text-slate-300 hover:text-white border border-slate-700/60 hover:border-teal-500/40 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 backdrop-blur-sm"
+            className="flex items-center gap-2 px-9 py-4 rounded-2xl text-base font-semibold text-on-surface-variant hover:text-on-surface border border-outline-variant/30 hover:border-primary/40 bg-surface/30 hover:bg-surface/60 transition-all duration-300 backdrop-blur-sm"
           >
             <span className="material-symbols-outlined text-[20px]">dashboard</span>
             Access Dashboard
@@ -126,11 +126,11 @@ export default function HeroSection({ openAuth }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-6 text-[11px] text-slate-500 mb-16"
+          className="flex flex-wrap items-center justify-center gap-6 text-[11px] text-outline mb-16"
         >
           {["No credit card required", "100% local data privacy", "HIPAA-conscious design"].map((t) => (
             <span key={t} className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-teal-500/70 text-[13px]">verified</span>
+              <span className="material-symbols-outlined text-primary/70 text-[13px]">verified</span>
               {t}
             </span>
           ))}

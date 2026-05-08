@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { loadSettings, saveSettings } from "../../services/authStorage.js";
+import { applyThemeFromSettings } from "../../services/themeSync.js";
 
 export default function LandingNav({ openAuth }) {
   const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState(() => loadSettings().themeMode || "dark");
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 30);
@@ -9,11 +12,27 @@ export default function LandingNav({ openAuth }) {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  useEffect(() => {
+    function onSettings() {
+      setTheme(loadSettings().themeMode || "dark");
+    }
+    window.addEventListener("carevia-settings-updated", onSettings);
+    return () => window.removeEventListener("carevia-settings-updated", onSettings);
+  }, []);
+
+  function toggleTheme() {
+    const next = theme === "dark" ? "light" : "dark";
+    saveSettings({ themeMode: next });
+    setTheme(next);
+    applyThemeFromSettings();
+    window.dispatchEvent(new CustomEvent("carevia-settings-updated"));
+  }
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[#050d18]/90 backdrop-blur-2xl border-b border-teal-500/10 shadow-[0_4px_40px_rgba(0,0,0,0.5)]"
+          ? "bg-background/90 backdrop-blur-2xl border-b border-primary/10 shadow-[0_4px_40px_rgba(0,0,0,0.2)]"
           : "bg-transparent"
       }`}
     >
@@ -27,7 +46,7 @@ export default function LandingNav({ openAuth }) {
             <div className="absolute inset-0 rounded-xl bg-teal-400/20 animate-ping" style={{ animationDuration: "3s" }} />
           </div>
           <div>
-            <span className="text-lg font-extrabold tracking-tight text-white font-headline">
+            <span className="text-lg font-extrabold tracking-tight text-on-surface font-headline">
               Carevia
             </span>
             <span className="hidden sm:inline text-[9px] font-bold tracking-[0.18em] text-teal-400/60 uppercase ml-2">
@@ -46,19 +65,32 @@ export default function LandingNav({ openAuth }) {
             <a
               key={label}
               href={href}
-              className="relative px-4 py-2 text-[13px] font-medium text-slate-400 hover:text-white transition-colors duration-300 group"
+              className="relative px-4 py-2 text-[13px] font-medium text-on-surface-variant hover:text-on-surface transition-colors duration-300 group"
             >
               {label}
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-teal-400 to-cyan-400 group-hover:w-3/4 transition-all duration-300 rounded-full" />
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-primary to-secondary group-hover:w-3/4 transition-all duration-300 rounded-full" />
             </a>
           ))}
         </nav>
 
         {/* CTA */}
         <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all mr-2"
+            aria-label="Toggle Theme"
+            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            <span className="material-symbols-outlined text-[20px]">
+              {theme === "dark" ? "light_mode" : "dark_mode"}
+            </span>
+          </button>
+
           <button
             onClick={() => openAuth("signin")}
-            className="text-sm font-medium text-slate-400 hover:text-white transition-colors hidden sm:block px-4 py-2"
+            className="text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors hidden sm:block px-4 py-2"
           >
             Sign in
           </button>

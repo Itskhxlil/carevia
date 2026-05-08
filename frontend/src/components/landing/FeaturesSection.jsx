@@ -10,15 +10,15 @@ const FEATURES = [
     iconColor: "text-teal-400",
     border: "border-teal-500/15",
     preview: (
-      <div className="mt-4 bg-slate-900/50 rounded-xl p-3 border border-slate-800/30">
+      <div className="mt-4 bg-surface-container-low/50 rounded-xl p-3 border border-outline-variant/30">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-[7px] font-black text-white">AH</div>
-          <div><p className="text-[9px] font-bold text-white">Ahmad Hassan</p><p className="text-[7px] text-slate-500">CRV-0042 · Critical</p></div>
+          <div><p className="text-[9px] font-bold text-on-surface">Ahmad Hassan</p><p className="text-[7px] text-outline">CRV-0042 · Critical</p></div>
           <span className="ml-auto text-[7px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded-full">!</span>
         </div>
         <div className="flex items-center gap-2 mb-1">
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-sky-400 to-blue-500 flex items-center justify-center text-[7px] font-black text-white">SM</div>
-          <div><p className="text-[9px] font-bold text-white">Sarah Mitchell</p><p className="text-[7px] text-slate-500">CRV-0118 · Stable</p></div>
+          <div><p className="text-[9px] font-bold text-on-surface">Sarah Mitchell</p><p className="text-[7px] text-outline">CRV-0118 · Stable</p></div>
           <span className="ml-auto text-[7px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full">✓</span>
         </div>
       </div>
@@ -32,15 +32,15 @@ const FEATURES = [
     iconColor: "text-sky-400",
     border: "border-sky-500/15",
     preview: (
-      <div className="mt-4 bg-slate-900/50 rounded-xl p-3 border border-slate-800/30">
+      <div className="mt-4 bg-surface-container-low/50 rounded-xl p-3 border border-outline-variant/30">
         <div className="grid grid-cols-2 gap-2">
           {[
             { label: "Glucose", value: "186", unit: "mg/dL", alert: true },
             { label: "SpO₂", value: "97", unit: "%", alert: false },
           ].map((v) => (
             <div key={v.label} className={`p-2 rounded-lg border ${v.alert ? "border-rose-500/20 bg-rose-500/5" : "border-slate-700/30 bg-slate-800/30"}`}>
-              <p className="text-[7px] text-slate-500 uppercase">{v.label}</p>
-              <p className={`text-sm font-black ${v.alert ? "text-rose-400" : "text-white"}`}>{v.value}<span className="text-[8px] font-normal text-slate-500 ml-0.5">{v.unit}</span></p>
+              <p className="text-[7px] text-outline uppercase">{v.label}</p>
+              <p className={`text-sm font-black ${v.alert ? "text-rose-400" : "text-on-surface"}`}>{v.value}<span className="text-[8px] font-normal text-outline ml-0.5">{v.unit}</span></p>
             </div>
           ))}
         </div>
@@ -55,7 +55,7 @@ const FEATURES = [
     iconColor: "text-violet-400",
     border: "border-violet-500/15",
     preview: (
-      <div className="mt-4 bg-slate-900/50 rounded-xl p-3 border border-slate-800/30">
+      <div className="mt-4 bg-surface-container-low/50 rounded-xl p-3 border border-outline-variant/30">
         <div className="flex items-end gap-1 h-12 px-1">
           {[35, 55, 40, 70, 50, 80, 65, 75].map((h, i) => (
             <div key={i} className="flex-1 rounded-t-sm bg-gradient-to-t from-violet-500/70 to-purple-400/50" style={{ height: `${h}%` }} />
@@ -111,7 +111,7 @@ const FEATURES = [
         <span className="material-symbols-outlined text-emerald-400 text-[18px]">shield</span>
         <div>
           <p className="text-[9px] font-bold text-emerald-300">Data encrypted locally</p>
-          <p className="text-[7px] text-slate-500">Zero external transmission</p>
+          <p className="text-[7px] text-outline">Zero external transmission</p>
         </div>
       </div>
     ),
@@ -130,7 +130,7 @@ export default function FeaturesSection() {
   return (
     <section id="features" className="py-28 relative">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-outline/30 to-transparent" />
         <div className="absolute top-1/2 left-0 w-72 h-72 bg-teal-500/[0.03] rounded-full blur-[100px]" />
         <div className="absolute top-1/3 right-0 w-72 h-72 bg-cyan-500/[0.03] rounded-full blur-[100px]" />
       </div>
@@ -146,10 +146,10 @@ export default function FeaturesSection() {
           <span className="text-[11px] font-bold tracking-[0.2em] text-teal-400 uppercase mb-3 block">
             Platform Features
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-headline mb-5">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-on-surface font-headline mb-5">
             Everything a clinician needs
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
+          <p className="text-on-surface-variant text-base sm:text-lg max-w-2xl mx-auto">
             Not a generic health app — a physician-grade archiving tool built for real clinical workflows.
           </p>
         </motion.div>
@@ -166,12 +166,12 @@ export default function FeaturesSection() {
               className={`group relative rounded-2xl p-6 bg-gradient-to-br ${f.gradient} border ${f.border} backdrop-blur-sm hover:-translate-y-2 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:border-opacity-40`}
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-slate-900/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-10 h-10 rounded-xl bg-surface-container-high/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <span className={`material-symbols-outlined text-[22px] ${f.iconColor}`}>{f.icon}</span>
                 </div>
-                <h3 className="text-base font-bold text-white font-headline">{f.title}</h3>
+                <h3 className="text-base font-bold text-on-surface font-headline">{f.title}</h3>
               </div>
-              <p className="text-sm text-slate-400 leading-relaxed">{f.desc}</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">{f.desc}</p>
               {f.preview}
             </motion.div>
           ))}

@@ -49,21 +49,21 @@ export default function LiveDashboard() {
   }, []);
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-teal-500/15 shadow-[0_50px_120px_rgba(0,0,0,0.6),0_0_0_1px_rgba(20,184,166,0.08)] bg-[#060e1a]">
+    <div className="relative rounded-2xl overflow-hidden border border-primary/15 shadow-[0_50px_120px_rgba(0,0,0,0.3),0_0_0_1px_rgba(var(--color-primary),0.08)] bg-surface">
       {/* Browser chrome bar */}
-      <div className="bg-[#0a1525] border-b border-slate-700/40 px-4 py-3 flex items-center gap-3">
+      <div className="bg-surface-container-high border-b border-outline-variant/30 px-4 py-3 flex items-center gap-3">
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
           <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
           <div className="w-3 h-3 rounded-full bg-[#28c840]" />
         </div>
-        <div className="flex-1 mx-6 bg-[#050d18] rounded-lg px-4 py-1.5 flex items-center gap-2">
-          <span className="material-symbols-outlined text-teal-500/40 text-[14px]">lock</span>
-          <span className="text-[11px] text-slate-500 font-medium">carevia.app/dashboard/overview</span>
+        <div className="flex-1 mx-6 bg-surface-container-low rounded-lg px-4 py-1.5 flex items-center gap-2">
+          <span className="material-symbols-outlined text-primary/40 text-[14px]">lock</span>
+          <span className="text-[11px] text-on-surface-variant font-medium">carevia.app/dashboard/overview</span>
         </div>
         <div className="flex gap-2">
-          <div className="w-6 h-6 rounded-md bg-slate-800/60 flex items-center justify-center">
-            <span className="material-symbols-outlined text-slate-600 text-[12px]">refresh</span>
+          <div className="w-6 h-6 rounded-md bg-surface-container-highest flex items-center justify-center">
+            <span className="material-symbols-outlined text-outline text-[12px]">refresh</span>
           </div>
         </div>
       </div>
@@ -71,12 +71,12 @@ export default function LiveDashboard() {
       {/* Dashboard content */}
       <div className="p-3 sm:p-5 grid grid-cols-12 gap-3 min-h-[340px]">
         {/* Sidebar */}
-        <div className="col-span-2 hidden md:flex flex-col gap-1.5 pr-3 border-r border-slate-800/50">
+        <div className="col-span-2 hidden md:flex flex-col gap-1.5 pr-3 border-r border-outline-variant/20">
           <div className="flex items-center gap-2 mb-3 px-2">
             <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
               <span className="material-symbols-outlined text-white text-[12px]">favorite</span>
             </div>
-            <span className="text-[10px] font-bold text-white">Carevia</span>
+            <span className="text-[10px] font-bold text-on-surface">Carevia</span>
           </div>
           {[
             { icon: "grid_view", label: "Overview", active: true },
@@ -89,8 +89,8 @@ export default function LiveDashboard() {
               key={item.label}
               className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-[10px] font-medium transition-colors ${
                 item.active
-                  ? "bg-teal-500/10 text-teal-400 border border-teal-500/20"
-                  : "text-slate-500 hover:text-slate-400"
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
               <span className="material-symbols-outlined text-[14px]">{item.icon}</span>
@@ -111,7 +111,7 @@ export default function LiveDashboard() {
             ].map((s) => (
               <div
                 key={s.label}
-                className="bg-slate-800/40 rounded-xl p-3 border border-slate-700/30 hover:border-slate-600/40 transition-colors group"
+                className="bg-surface-container-low/40 rounded-xl p-3 border border-outline-variant/30 hover:border-primary/40 transition-colors group"
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className={`material-symbols-outlined text-[14px] text-${s.color}-400/60`}>{s.icon}</span>
@@ -122,7 +122,7 @@ export default function LiveDashboard() {
                 <p className={`text-xl font-black text-${s.color}-400 group-hover:text-${s.color}-300 transition-colors`}>
                   <AnimatedNumber target={s.val} />
                 </p>
-                <p className="text-[9px] text-slate-500 mt-0.5 uppercase tracking-wider">{s.label}</p>
+                <p className="text-[9px] text-outline mt-0.5 uppercase tracking-wider">{s.label}</p>
               </div>
             ))}
           </div>
@@ -130,10 +130,10 @@ export default function LiveDashboard() {
           {/* Charts + Alerts row */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {/* Chart */}
-            <div className="sm:col-span-2 bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+            <div className="sm:col-span-2 bg-surface-container-low/30 rounded-xl p-3 border border-outline-variant/25">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Patient Admissions</span>
-                <span className="text-[9px] text-teal-400/60 font-medium">Last 12 months</span>
+                <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Patient Admissions</span>
+                <span className="text-[9px] text-primary/60 font-medium">Last 12 months</span>
               </div>
               <div className="flex items-end gap-1.5 h-24 px-1">
                 {CHART_DATA.map((h, i) => (
@@ -145,7 +145,7 @@ export default function LiveDashboard() {
                       animationDelay: `${i * 0.08}s`,
                     }}
                   >
-                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-slate-900 text-[8px] text-teal-300 px-1.5 py-0.5 rounded font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-surface-container-highest text-[8px] text-primary px-1.5 py-0.5 rounded font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                       {Math.round(h * 2.8)}
                     </div>
                   </div>
@@ -154,9 +154,9 @@ export default function LiveDashboard() {
             </div>
 
             {/* Alerts panel */}
-            <div className="bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+            <div className="bg-surface-container-low/30 rounded-xl p-3 border border-outline-variant/25">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Live Alerts</span>
+                <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Live Alerts</span>
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute h-full w-full rounded-full bg-rose-400 opacity-75" />
                   <span className="relative rounded-full h-2 w-2 bg-rose-400" />
@@ -177,7 +177,7 @@ export default function LiveDashboard() {
                       <div className={`w-1.5 h-1.5 rounded-full ${c.dot} mt-1 shrink-0`} />
                       <div className="min-w-0">
                         <p className={`text-[9px] font-semibold ${c.text} truncate`}>{a.msg}</p>
-                        <p className="text-[8px] text-slate-600">{a.time}</p>
+                        <p className="text-[8px] text-outline/50">{a.time}</p>
                       </div>
                     </div>
                   );
@@ -187,24 +187,24 @@ export default function LiveDashboard() {
           </div>
 
           {/* Patient list mini */}
-          <div className="bg-slate-800/30 rounded-xl p-3 border border-slate-700/25">
+          <div className="bg-surface-container-low/30 rounded-xl p-3 border border-outline-variant/25">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recent Patients</span>
-              <span className="text-[9px] text-teal-400/60 cursor-pointer hover:text-teal-400 transition-colors">View all →</span>
+              <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Recent Patients</span>
+              <span className="text-[9px] text-primary/60 cursor-pointer hover:text-primary transition-colors">View all →</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {PATIENTS.map((p) => {
                 const c = STATUS_COLORS[p.status];
                 return (
-                  <div key={p.id} className="flex items-center gap-2 p-2 rounded-lg bg-slate-900/40 border border-slate-800/40 hover:border-slate-700/50 transition-colors">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-500/80 to-cyan-600/80 flex items-center justify-center text-[9px] font-black text-white shrink-0">
+                  <div key={p.id} className="flex items-center gap-2 p-2 rounded-lg bg-surface-container-high/40 border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-[9px] font-black text-white shrink-0">
                       {p.initials}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[9px] font-bold text-white truncate">{p.name}</p>
+                      <p className="text-[9px] font-bold text-on-surface truncate">{p.name}</p>
                       <div className="flex items-center gap-1">
                         <span className={`text-[7px] font-bold uppercase ${c.text}`}>{p.status}</span>
-                        <span className="text-[7px] text-slate-600">· {p.age}y</span>
+                        <span className="text-[7px] text-outline">· {p.age}y</span>
                       </div>
                     </div>
                   </div>
