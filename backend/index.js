@@ -18,10 +18,13 @@ const fs = require("fs");
 
 const express = require("express");
 const cors = require("cors");
-const store = require("./medicalRecordsStore");
+const store = require("./stores/medicalRecordsStore");
+const appointmentsStore = require("./stores/appointmentsStore");
 const medicalRoutes = require("./routes/medicalRecords");
+const appointmentRoutes = require("./routes/appointments");
 
 store.initStore();
+appointmentsStore.initStore();
 
 const PORT = Number(process.env.API_PORT) || 3001;
 const app = express();
@@ -38,6 +41,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api", medicalRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Carevia API http://localhost:${PORT}`);

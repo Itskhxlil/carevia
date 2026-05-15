@@ -1,7 +1,6 @@
-# Carevia — Clinical Archivist
+# Carevia — Clinical Workspace
 
-A medical workspace UI built with **React 18 + Vite + Tailwind CSS**.  
-Academic project — UI only, no backend.
+A professional, multilingual clinical patient management system built with **React 18 + Vite + Node.js + MySQL**.
 
 ---
 
@@ -9,71 +8,126 @@ Academic project — UI only, no backend.
 
 ```
 carevia/
-├── index.html                  # HTML shell + Google Fonts
-├── vite.config.js
-├── tailwind.config.js          # Full design system tokens
-├── postcss.config.js
-├── package.json
-└── src/
-    ├── main.jsx                # React entry point
-    ├── App.jsx                 # Router (/ → Register, /dashboard → Dashboard)
-    ├── index.css               # Tailwind directives + global styles
-    │
-    ├── pages/
-    │   ├── RegisterPage.jsx    # Doctor onboarding form
-    │   └── DashboardPage.jsx   # Main clinical workspace
-    │
-    ├── components/
-    │   ├── Navbar.jsx          # Sticky top nav (glassmorphism)
-    │   ├── Cards.jsx           # StatCard, MedicalCard, InfoRow, StatusChip
-    │   └── PatientList.jsx     # High-density sortable patient table
-    │
-    └── services/               # Empty — ready for API integration
-        ├── patientService.js
-        └── authService.js
+├── frontend/                    # React 18 + Vite + TailwindCSS
+│   ├── public/
+│   │   └── doctors.png
+│   ├── src/
+│   │   ├── assets/              # Logo and static assets
+│   │   ├── components/          # Reusable UI components
+│   │   │   ├── landing/         # Landing page components
+│   │   │   ├── Cards.jsx
+│   │   │   ├── DashboardLayout.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── PatientList.jsx
+│   │   │   └── LanguageSwitcher.jsx
+│   │   ├── i18n/                # Multilingual translations (ar, en, fr)
+│   │   ├── medical/             # Disease configs and measurement logic
+│   │   ├── pages/               # Route-level page components
+│   │   ├── services/            # API and storage service layer
+│   │   ├── utils/               # Shared utilities
+│   │   ├── App.jsx
+│   │   ├── PatientsContext.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── vercel.json
+│   └── package.json
+│
+├── backend/                     # Node.js + Express REST API
+│   ├── routes/
+│   │   ├── medicalRecords.js    # GET/POST/DELETE medical records
+│   │   └── appointments.js     # GET/POST/PATCH/DELETE appointments
+│   ├── database/
+│   │   └── schema.sql           # MySQL schema
+│   ├── medicalRecordsStore.js   # In-memory + MySQL store
+│   ├── appointmentsStore.js     # In-memory + MySQL store
+│   ├── index.js                 # Express app entry point
+│   └── package.json
+│
+├── .gitignore
+└── README.md
 ```
 
 ---
 
 ## Getting Started
 
+### Prerequisites
+- Node.js >= 18
+- MySQL (optional — falls back to in-memory store)
+
+### 1. Install dependencies
+
 ```bash
-# Install dependencies
-npm install
+# Frontend
+cd frontend && npm install
 
-# Start dev server
-npm run dev
-
-# Build for production
-npm run build
+# Backend
+cd backend && npm install
 ```
 
+### 2. Configure environment (optional)
+
+Copy `frontend/env.example` to `frontend/.env` and adjust if needed.
+
+For MySQL support, create `backend/.env`:
+```env
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=yourpassword
+MYSQL_DATABASE=carevia
+API_PORT=3001
+```
+
+### 3. Start the development servers
+
+```bash
+# Terminal 1 — Backend API
+cd backend && npm run dev
+
+# Terminal 2 — Frontend
+cd frontend && npm run dev
+```
+
+Frontend → http://localhost:5173  
+Backend API → http://localhost:3001
+
 ---
 
-## Design System
+## Features
 
-Follows **The Clinical Archivist** design system (`design.md`):
-
-| Token                  | Hex       | Usage                            |
-|------------------------|-----------|----------------------------------|
-| `surface`              | `#101415` | Page background                  |
-| `surface-container-low`| `#191c1e` | Sidebar, visual panel            |
-| `surface-container-lowest`| `#0b0f10` | Cards (elevated feel)         |
-| `primary`              | `#93ccff` | Brand blue, interactive elements |
-| `on-surface`           | `#e0e3e5` | Primary text                     |
-| `outline-variant`      | `#3f4850` | Ghost borders (used at /20 opacity)|
-
-**Fonts:** Manrope (headlines) + Inter (body/labels)  
-**Icons:** Material Symbols Outlined
+- 🌐 **Multilingual** — Arabic (RTL), English, French
+- 👨‍⚕️ **Patient Registry** — Full CRUD with structured medical profiles
+- 📋 **Medical Records** — Per-visit vital tracking (glucose, BP, weight, SpO₂)
+- 📅 **Appointments** — Month / Week / Day calendar with scheduling
+- 📊 **Clinical Analytics** — Trend charts, status distributions, critical alerts
+- 🔒 **Local-First Privacy** — Data stored locally, no cloud dependency by default
+- 🌗 **Dark / Light Mode** — System-aware theme toggle
 
 ---
 
-## Key Design Rules Implemented
+## Tech Stack
 
-- **No-Line Rule** — sections separated by tonal background shifts, not borders  
-- **Ghost Borders** — `border-outline-variant/20` only where needed  
-- **Glassmorphism** — Navbar uses `bg-surface/80 backdrop-blur-[12px]`  
-- **CTA Gradient** — `bg-gradient-to-b from-primary to-primary-container`  
-- **Status Chips** — only UI element using `rounded-full`  
-- **High-Density Table** — no dividers, hover-based row separation  
-- **Typography** — never bolder than "Medium" for body; scale does the hierarchy work  
+| Layer      | Technology                                  |
+|------------|---------------------------------------------|
+| Frontend   | React 18, Vite, TailwindCSS, Framer Motion  |
+| Routing    | React Router v6                             |
+| i18n       | i18next, react-i18next                      |
+| Charts     | Recharts                                    |
+| Backend    | Node.js, Express                            |
+| Database   | MySQL 8 (optional), in-memory fallback      |
+| Icons      | Material Symbols Outlined (Google Fonts)    |
+
+---
+
+## Deployment
+
+### Vercel (Frontend)
+The `frontend/vercel.json` is pre-configured for SPA routing. Push and connect the `frontend/` directory.
+
+### Backend
+Deploy as a Node.js service. Set the environment variables above on your hosting provider.
