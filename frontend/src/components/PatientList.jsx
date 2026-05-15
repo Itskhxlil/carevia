@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { loadSettings } from "../services/authStorage.js";
 import { StatusChip } from "./Cards.jsx";
 import { usePatients } from "../PatientsContext.jsx";
 
 export default function PatientList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { patients } = usePatients();
   const [search, setSearch] = useState("");
@@ -59,20 +61,20 @@ export default function PatientList() {
   return (
     <div className="space-y-6">
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 rounded-3xl bg-surface/40 border border-outline-variant/30 shadow-xl">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 rounded-3xl bg-surface/40 border border-outline-variant/80 shadow-xl">
         <div className="flex-1 space-y-4">
            <div>
-              <h3 className="text-[11px] font-black text-outline uppercase tracking-[0.2em] mb-1">Clinical Registry</h3>
-              <p className="text-xl font-black text-on-surface">Active Patient Records</p>
+              <h3 className="text-[11px] font-black text-outline uppercase tracking-[0.2em] mb-1">{t("patients.registry")}</h3>
+              <p className="text-xl font-black text-on-surface">{t("patients.title")}</p>
            </div>
            
-           <div className="flex items-center gap-3 px-4 py-2 bg-surface-container-low/60 border border-outline-variant/30 rounded-2xl w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-300">
+           <div className="flex items-center gap-3 px-4 py-2 bg-surface-container-low/60 border border-outline-variant/80 rounded-2xl w-full max-w-md focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-300">
               <span className="material-symbols-outlined text-outline text-[20px]">search</span>
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name, ID, or diagnosis..."
+                placeholder={t("patients.search")}
                 className="w-full bg-transparent text-sm text-on-surface-variant placeholder:text-outline outline-none font-body py-1.5"
               />
               {search && (
@@ -88,10 +90,10 @@ export default function PatientList() {
               type="button"
               onClick={handleExport}
               disabled={patients.length === 0}
-              className="h-12 px-5 rounded-2xl border border-outline-variant/30 bg-surface-container-low/40 text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-30 flex items-center gap-2"
+              className="h-12 px-5 rounded-2xl border border-outline-variant/80 bg-surface-container-low/40 text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all text-xs font-bold uppercase tracking-widest disabled:opacity-30 flex items-center gap-2"
             >
               <span className="material-symbols-outlined text-[18px]">download</span>
-              Export Data
+              {t("patients.export")}
             </button>
         </div>
       </div>
@@ -120,27 +122,27 @@ export default function PatientList() {
                           <span className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">{patient.name}</span>
                           <span className="text-[10px] font-mono text-outline uppercase tracking-widest">{patient.id}</span>
                        </div>
-                       <p className="text-xs text-on-surface-variant truncate max-w-[200px] sm:max-w-xs">{patient.diagnosis || "General Admission"}</p>
+                       <p className="text-xs text-on-surface-variant truncate max-w-[200px] sm:max-w-xs">{patient.diagnosis || t("medical.diseases.general")}</p>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-8 relative z-10">
                     <div className="flex flex-col items-center sm:items-end">
-                       <span className="text-[9px] font-black text-outline uppercase tracking-[0.15em] mb-0.5">Last Encounter</span>
+                       <span className="text-[9px] font-black text-outline uppercase tracking-[0.15em] mb-0.5">{t("patients.colLastVisit")}</span>
                        <span className="text-xs font-bold text-on-surface-variant">{patient.lastVisit}</span>
                     </div>
-                                      <div className="flex flex-col items-center sm:items-end">
-                       <span className="text-[9px] font-black text-outline uppercase tracking-[0.15em] mb-0.5">Age</span>
-                       <span className="text-xs font-bold text-on-surface-variant">{patient.age}y</span>
+                    <div className="flex flex-col items-center sm:items-end">
+                       <span className="text-[9px] font-black text-outline uppercase tracking-[0.15em] mb-0.5">{t("patients.colAge")}</span>
+                       <span className="text-xs font-bold text-on-surface-variant">{patient.age}</span>
                     </div>
 
                    <div className="flex items-center gap-6">
-                      <StatusChip status={patient.status} />
+                      <StatusChip status={t(`status.${patient.status}`)} />
                                             <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            className="w-9 h-9 rounded-xl bg-surface-container-high/60 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-primary/50 transition-all"
-                            title="Clinical Overview"
+                            className="w-9 h-9 rounded-xl bg-surface-container-high/60 border border-outline-variant/80 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-primary/50 transition-all"
+                            title={t("common.view")}
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/dashboard/patients/${patient.id}`);
@@ -150,8 +152,8 @@ export default function PatientList() {
                           </button>
                           <button
                             type="button"
-                            className="w-9 h-9 rounded-xl bg-surface-container-high/60 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"
-                            title="Modify Record"
+                            className="w-9 h-9 rounded-xl bg-surface-container-high/60 border border-outline-variant/80 flex items-center justify-center text-on-surface-variant hover:text-primary hover:border-primary/30 transition-all"
+                            title={t("common.edit")}
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/dashboard/patients/${patient.id}/edit`);
@@ -171,11 +173,11 @@ export default function PatientList() {
                </span>
                <p className="text-sm font-bold text-outline">
                  {emptyNoData
-                   ? "No patient records found in your registry."
-                   : "No patients match your search criteria."}
+                   ? t("patients.noPatients")
+                   : t("patients.noMatch")}
                </p>
                <p className="text-xs text-outline/60 mt-2">
-                  {emptyNoData ? "Start by adding a new record to your workspace." : "Try clearing your filters or search keywords."}
+                  {emptyNoData ? t("patients.description") : t("common.noData")}
                </p>
             </div>
          )}
@@ -183,8 +185,8 @@ export default function PatientList() {
 
       <div className="px-6 py-4 flex items-center justify-between gap-4 flex-wrap border-t border-outline-variant/10">
         <p className="text-[10px] font-black text-outline uppercase tracking-widest">
-          Active Registry:{" "}
-          <span className="text-on-surface">{sorted.length} Records displayed</span>
+          {t("patients.registry")}:{" "}
+          <span className="text-on-surface">{sorted.length}</span>
         </p>
       </div>
     </div>

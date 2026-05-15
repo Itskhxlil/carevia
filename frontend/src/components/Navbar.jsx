@@ -1,22 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { loadSettings, saveSettings } from "../services/authStorage.js";
 import { applyThemeFromSettings } from "../services/themeSync.js";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import logo from "../assets/logo.png";
+import { usePatients } from "../PatientsContext.jsx";
 
 export default function Navbar({ doctorName = "", specialty = "", email = "", onSignOut }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { patients } = usePatients();
+  
   const [notifOpen, setNotifOpen] = useState(false);
   const [userOpen, setUserOpen]   = useState(false);
   const [scrolled, setScrolled]   = useState(false);
-  const [theme, setTheme]         = useState(() => loadSettings().themeMode || "dark");
+  const [theme, setTheme]         = useState(() => loadSettings().themeMode || "light");
+  
+  const [search, setSearch] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  
   const userWrapRef = useRef(null);
+  const searchWrapRef = useRef(null);
 
   useEffect(() => {
     function onDocClick(e) {
-      if (userWrapRef.current && !userWrapRef.current.contains(e.target)) {
-        setUserOpen(false);
-      }
+      if (userWrapRef.current && !userWrapRef.current.contains(e.target)) setUserOpen(false);
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) setShowResults(false);
     }
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
@@ -27,10 +37,9 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   useEffect(() => {
-    function onSettings() {
-      setTheme(loadSettings().themeMode || "dark");
-    }
+    function onSettings() { setTheme(loadSettings().themeMode || "light"); }
     window.addEventListener("carevia-settings-updated", onSettings);
     return () => window.removeEventListener("carevia-settings-updated", onSettings);
   }, []);
@@ -42,6 +51,10 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
     applyThemeFromSettings();
     window.dispatchEvent(new CustomEvent("carevia-settings-updated"));
   }
+
+  const searchResults = search.trim() 
+    ? patients.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.id.toLowerCase().includes(search.toLowerCase()))
+    : [];
 
   const initials = String(doctorName || "?")
     .trim()
@@ -56,50 +69,75 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
       className={`
         sticky top-0 z-50 transition-all duration-300
         ${scrolled
-          ? "bg-background/95 backdrop-blur-xl border-b border-primary/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+          ? "bg-background/95 backdrop-blur-xl border-b border-primary/10 shadow-[0_4px_30px_rgba(var(--color-primary),0.05)]"
           : "bg-background/80 backdrop-blur-md border-b border-outline-variant/15"
         }
       `}
     >
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 h-32 flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link to="/dashboard/overview" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center shadow-[0_0_16px_rgba(20,184,166,0.4)] group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined text-white text-[18px]">favorite</span>
-          </div>
-          <div className="flex flex-col -space-y-1">
-            <span className="text-base font-black text-on-surface tracking-tight font-headline">
-              Carevia
-            </span>
-            <span className="text-[9px] font-bold tracking-[0.1em] text-teal-400/70 uppercase">
-              Archivist
-            </span>
-          </div>
+        <Link to="/dashboard/overview" className="shrink-0 transition-transform hover:scale-105 active:scale-95">
+          <img src={logo} alt="Carevia" className="h-24 w-auto transform scale-125 origin-left" />
         </Link>
 
         {/* Search */}
-        <div className="flex-1 max-w-md hidden md:flex items-center gap-3 px-4 py-2 bg-surface-container-low/60 border border-outline-variant/30 rounded-xl focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-300">
-          <span className="material-symbols-outlined text-slate-500 text-[18px]">search</span>
-          <input
-            type="text"
-            placeholder={t("navbar.search") || "Search patients, records..."}
-            className="w-full bg-transparent text-sm text-on-surface-variant placeholder:text-outline outline-none font-body"
-          />
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-outline-variant bg-surface-container-high text-outline text-[10px] font-mono">
-            ⌘K
-          </kbd>
+        <div className="flex-1 max-w-md hidden md:block relative" ref={searchWrapRef}>
+          <div className="flex items-center gap-3 px-4 py-2 bg-surface-container-low/60 border border-outline-variant/80 rounded-xl focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-300">
+            <span className="material-symbols-outlined text-on-surface-variant/50 text-[18px]">search</span>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setShowResults(true); }}
+              onFocus={() => setShowResults(true)}
+              placeholder={t("navbar.searchPlaceholder")}
+              className="w-full bg-transparent text-sm text-on-surface-variant placeholder:text-outline outline-none font-body"
+            />
+          </div>
+
+          {showResults && search.trim() && (
+            <div className="absolute left-0 right-0 top-12 max-h-80 overflow-y-auto bg-surface border border-outline-variant/40 rounded-2xl shadow-2xl z-[60] py-2 animate-[carevia-fade-in-up_0.2s_ease-out_both]">
+               <p className="text-[9px] font-black uppercase tracking-widest text-outline px-4 py-1.5 mb-1 border-b border-outline-variant/10">
+                 {t("common.search")} ({searchResults.length})
+               </p>
+               {searchResults.length > 0 ? (
+                 searchResults.map(p => (
+                   <button
+                     key={p.id}
+                     onClick={() => {
+                        navigate(`/dashboard/patients/${p.id}`);
+                        setSearch("");
+                        setShowResults(false);
+                     }}
+                     className="w-full flex items-center justify-between px-4 py-2.5 hover:bg-primary/10 text-left transition-colors group"
+                   >
+                     <div className="min-w-0">
+                       <p className="text-xs font-bold text-on-surface group-hover:text-primary transition-colors">{p.name}</p>
+                       <p className="text-[10px] text-on-surface-variant font-mono truncate">{p.id}</p>
+                     </div>
+                     <span className={`w-1.5 h-1.5 rounded-full ${p.status === 'Critical' ? 'bg-error' : 'bg-primary'}`} />
+                   </button>
+                 ))
+               ) : (
+                 <div className="px-4 py-6 text-center">
+                    <p className="text-xs text-outline italic">{t("patients.noMatch")}</p>
+                 </div>
+               )}
+            </div>
+          )}
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2 shrink-0">
+          <LanguageSwitcher className="hidden sm:inline-block" />
+          
           {/* Theme Toggle */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
-            aria-label="Toggle Theme"
-            title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/80 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
+            aria-label={t("settings.appearance")}
+            title={theme === "dark" ? t("settings.light") : t("settings.dark")}
           >
             <span className="material-symbols-outlined text-[20px]">
               {theme === "dark" ? "light_mode" : "dark_mode"}
@@ -111,7 +149,7 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
             <button
               type="button"
               onClick={() => { setNotifOpen((o) => !o); setUserOpen(false); }}
-              className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
+              className="w-10 h-10 rounded-xl bg-surface-container-low/40 border border-outline-variant/80 flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-all"
               aria-label={t("navbar.notifications")}
             >
               <span className="material-symbols-outlined text-[20px]">notifications</span>
@@ -121,12 +159,12 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
             {notifOpen && (
               <div className="absolute right-0 top-12 w-72 z-50 bg-surface border border-outline-variant/40 rounded-2xl p-4 shadow-2xl animate-[carevia-fade-in-up_0.3s_ease-out_both]">
                 <p className="text-[10px] font-black uppercase tracking-widest text-outline mb-3 ml-1">
-                  Notifications
+                  {t("navbar.notifications")}
                 </p>
                 <div className="flex flex-col items-center justify-center py-6 text-center">
                   <span className="material-symbols-outlined text-outline/30 text-[32px] mb-2">notifications_off</span>
                   <p className="text-xs text-on-surface-variant">
-                    No new alerts at this time.
+                    {t("navbar.noNotifications")}
                   </p>
                 </div>
               </div>
@@ -138,14 +176,14 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); setUserOpen((o) => !o); setNotifOpen(false); }}
-              className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container-low/40 hover:bg-surface-container-low/60 transition-all duration-300 hover:border-primary/30"
+              className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-outline-variant/80 bg-surface-container-low/40 hover:bg-surface-container-low/60 transition-all duration-300 hover:border-primary/30"
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center text-white text-[11px] font-black shadow-[0_0_12px_rgba(20,184,166,0.35)]">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white text-[11px] font-black shadow-[0_0_12px_rgba(37,99,235,0.3)]">
                 {initials}
               </div>
               <div className="hidden sm:block text-left leading-tight">
-                <p className="text-xs font-bold text-on-surface truncate max-w-[100px]">{doctorName || "Dr. User"}</p>
-                <p className="text-[9px] font-bold text-on-surface-variant truncate uppercase tracking-wider">{specialty || "General"}</p>
+                <p className="text-xs font-bold text-on-surface truncate max-w-[100px]">{doctorName || t("common.physician")}</p>
+                <p className="text-[9px] font-bold text-on-surface-variant truncate uppercase tracking-wider">{t(`medical.diseases.${specialty.toLowerCase()}`) || specialty || t("medical.diseases.general")}</p>
               </div>
               <span className="material-symbols-outlined text-outline text-[18px] hidden sm:block">expand_more</span>
             </button>
@@ -166,7 +204,7 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
                   onClick={() => setUserOpen(false)}
                 >
                   <span className="material-symbols-outlined text-[20px]">account_circle</span>
-                  My Profile
+                  {t("sidebar.profile")}
                 </Link>
                 <Link
                   to="/dashboard/settings"
@@ -175,18 +213,18 @@ export default function Navbar({ doctorName = "", specialty = "", email = "", on
                   onClick={() => setUserOpen(false)}
                 >
                   <span className="material-symbols-outlined text-[20px]">tune</span>
-                  Workspace Settings
+                  {t("sidebar.settings")}
                 </Link>
 
                 <div className="mt-1 pt-1 border-t border-outline-variant/15">
                   <button
                     type="button"
                     role="menuitem"
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-rose-400 hover:bg-rose-500/10 transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-error hover:bg-error/10 transition-colors text-left"
                     onClick={() => { setUserOpen(false); onSignOut(); }}
                   >
                     <span className="material-symbols-outlined text-[20px]">logout</span>
-                    Sign Out
+                    {t("sidebar.signOut")}
                   </button>
                 </div>
               </div>

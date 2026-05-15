@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSession, signIn, signUp } from "../services/authStorage.js";
+import logo from "../assets/logo.png";
 
 const SPECIALTIES = [
   "Cardiology",
@@ -143,16 +144,8 @@ export default function AuthPage() {
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#060f1a]/95 backdrop-blur-xl border-b border-teal-500/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]" : "bg-transparent"}`}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center shadow-[0_0_16px_rgba(20,184,166,0.5)]">
-              <span className="material-symbols-outlined text-white text-[18px]">favorite</span>
-            </div>
-            <span className="text-lg font-extrabold tracking-tight text-white font-headline">
-              Carevia
-            </span>
-            <span className="hidden sm:block text-[10px] font-semibold tracking-[0.15em] text-teal-400/70 uppercase border-l border-teal-500/20 pl-2.5 ml-1">
-              Clinical Archivist
-            </span>
+          <div className="flex items-center shrink-0">
+            <img src={logo} alt="Carevia" className="h-28 w-auto transform scale-110" />
           </div>
 
           {/* Nav links */}
@@ -538,11 +531,8 @@ export default function AuthPage() {
       {/* ══════ FOOTER ══════ */}
       <footer className="border-t border-slate-800/60 py-8">
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center">
-              <span className="material-symbols-outlined text-white text-[12px]">favorite</span>
-            </div>
-            <span className="text-sm font-bold text-slate-400">Carevia Clinical Archivist</span>
+          <div className="flex items-center shrink-0">
+            <img src={logo} alt="Carevia" className="h-24 w-auto opacity-80" />
           </div>
           <p className="text-xs text-slate-600">© 2026 Carevia. Patient data stored locally. Zero cloud dependency.</p>
         </div>
@@ -568,14 +558,8 @@ export default function AuthPage() {
             </button>
 
             {/* Logo */}
-            <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center shadow-[0_0_16px_rgba(20,184,166,0.5)]">
-                <span className="material-symbols-outlined text-white text-[18px]">favorite</span>
-              </div>
-              <div>
-                <p className="text-base font-extrabold text-white font-headline">Carevia</p>
-                <p className="text-[10px] text-teal-400/70 uppercase tracking-wider">Clinical Archivist</p>
-              </div>
+            <div className="flex justify-center mb-10">
+              <img src={logo} alt="Carevia" className="h-48 w-auto transform scale-110" />
             </div>
 
             {/* Tab switcher */}

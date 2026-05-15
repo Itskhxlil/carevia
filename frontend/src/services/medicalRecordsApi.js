@@ -1,7 +1,18 @@
+import { getSession } from "./authStorage.js";
+
 const BASE =
   typeof import.meta !== "undefined" && import.meta.env?.VITE_API_BASE
     ? String(import.meta.env.VITE_API_BASE).replace(/\/$/, "")
     : "";
+
+function getAuthHeaders() {
+  const session = getSession();
+  if (!session) return {};
+  return {
+    "X-Doctor-Email": session.email || "",
+    "X-Doctor-Specialty": session.specialty || "",
+  };
+}
 
 async function parseJson(res) {
   const text = await res.text();
@@ -14,7 +25,10 @@ async function parseJson(res) {
 
 export async function fetchMedicalRecords(patientId) {
   const res = await fetch(
-    `${BASE}/api/patients/${encodeURIComponent(patientId)}/medical-records`
+    `${BASE}/api/patients/${encodeURIComponent(patientId)}/medical-records`,
+    {
+      headers: getAuthHeaders(),
+    }
   );
   const data = await parseJson(res);
   if (!res.ok) {
@@ -28,7 +42,10 @@ export async function createMedicalRecord(patientId, body) {
     `${BASE}/api/patients/${encodeURIComponent(patientId)}/medical-records`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
       body: JSON.stringify(body),
     }
   );
@@ -40,7 +57,9 @@ export async function createMedicalRecord(patientId, body) {
 }
 
 export async function fetchRecentRecordStats(days = 7) {
-  const res = await fetch(`${BASE}/api/stats/recent?days=${encodeURIComponent(days)}`);
+  const res = await fetch(`${BASE}/api/stats/recent?days=${encodeURIComponent(days)}`, {
+    headers: getAuthHeaders(),
+  });
   const data = await parseJson(res);
   if (!res.ok) {
     throw new Error(data.error || "Failed to load stats");

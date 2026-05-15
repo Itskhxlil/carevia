@@ -1,31 +1,32 @@
 import React, { useEffect, useReducer } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Navbar from "./Navbar.jsx";
 import { PatientsProvider } from "../PatientsContext.jsx";
 import { clearSession, getSession } from "../services/authStorage.js";
 
-const NAV_ITEMS = [
-  { to: "overview",     icon: "dashboard",    label: "Overview" },
-  { to: "patients",     icon: "group",         label: "Patient Registry" },
-  { to: "appointments", icon: "event_note",    label: "Appointments" },
-  { to: "labs",         icon: "science",       label: "Lab Results" },
-  { to: "records",      icon: "description",   label: "Clinical Records" },
-  { to: "analytics",    icon: "monitoring",    label: "Vitals Analytics" },
-];
-
-function navClass(isActive) {
-  return `
-    flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-300
-    ${isActive 
-      ? "bg-primary/15 text-primary border border-primary/20 shadow-[0_0_20px_rgba(var(--color-primary),0.1)]" 
-      : "text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 border border-transparent"
-    }
-  `;
-}
-
 export default function DashboardLayout() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [, bumpSession] = useReducer((x) => x + 1, 0);
+
+  const NAV_ITEMS = [
+    { to: "overview",     icon: "dashboard",    label: t("sidebar.overview") },
+    { to: "patients",     icon: "group",        label: t("sidebar.patients") },
+    { to: "appointments", icon: "event_note",   label: t("sidebar.appointments") },
+    { to: "records",      icon: "description",  label: t("sidebar.records") },
+    { to: "analytics",    icon: "monitoring",   label: t("sidebar.analytics") },
+  ];
+
+  function navClass(isActive) {
+    return `
+      flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-300
+      ${isActive 
+        ? "bg-primary/15 text-primary border border-primary/20 shadow-[0_0_20px_rgba(var(--color-primary),0.1)]" 
+        : "text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/40 border border-transparent"
+      }
+    `;
+  }
 
   useEffect(() => {
     if (!getSession()) navigate("/", { replace: true });
@@ -99,22 +100,12 @@ export default function DashboardLayout() {
             {/* Removed duplicate Profile/Settings/Sign Out from sidebar as they exist in Navbar */}
 
             
-            {/* Sidebar Footer */}
-            <div className="mt-6 px-4">
-                <div className="p-3 rounded-xl bg-primary/5 border border-primary/10">
-                  <div className="flex items-center gap-2 mb-1.5">
-                     <span className="material-symbols-outlined text-teal-500 text-[14px]">bolt</span>
-                      <span className="text-[9px] font-black text-primary uppercase tracking-wider">Local Health Store</span>
-                  </div>
-                   <p className="text-[10px] text-on-surface-variant leading-normal">Your data is stored 100% locally for maximum privacy.</p>
-               </div>
-            </div>
           </aside>
 
            <main className="flex-1 overflow-y-auto min-h-0 bg-background relative">
             {/* Background glows for main area */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
-               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/5 rounded-full blur-[120px] -mr-64 -mt-64" />
+               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-64 -mt-64" />
                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/3 rounded-full blur-[100px] -ml-40 -mb-40" />
             </div>
             <div className="relative z-10">

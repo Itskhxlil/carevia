@@ -1,17 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { DISEASE_OPTIONS, fieldsForDisease } from "../medical/diseaseConfig.js";
+import { useTranslation } from "react-i18next";
+import { fieldsForDisease } from "../medical/diseaseConfig.js";
 import { createMedicalRecord } from "../services/medicalRecordsApi.js";
 
-function emptyCustom() {
-  return { id: `c-${Date.now()}`, key: "", value: "" };
-}
-
-export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
-  const [disease, setDisease] = useState("general");
+export default function MedicalRecordForm({ patientId, disease, onSaved, onCancel }) {
+  const { t } = useTranslation();
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState("");
   const [fieldValues, setFieldValues] = useState({});
-  const [customRows, setCustomRows] = useState([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,18 +21,6 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
     setFieldValues(next);
   }, [disease, templateFields]);
 
-  function addCustomRow() {
-    setCustomRows((r) => [...r, emptyCustom()]);
-  }
-
-  function updateCustom(id, patch) {
-    setCustomRows((rows) => rows.map((row) => (row.id === id ? { ...row, ...patch } : row)));
-  }
-
-  function removeCustom(id) {
-    setCustomRows((rows) => rows.filter((row) => row.id !== id));
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
@@ -45,7 +29,15 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
     for (const f of templateFields) {
       const raw = String(fieldValues[f] ?? "").trim();
       if (raw === "") continue;
-      if (f === "HbA1c" || f === "weight" || f === "glucose" || f === "heart_rate" || f === "temperature" || f === "creatinine" || f === "egfr" || f === "peak_flow" || f === "spo2") {
+      
+      // Numerical parsing for known numeric fields
+      const numericFields = [
+        "HbA1c", "weight", "glucose", "heart_rate", "temperature", 
+        "creatinine", "gfr", "peak_flow", "oxygen_saturation", 
+        "respiratory_rate", "urea", "cholesterol"
+      ];
+      
+      if (numericFields.includes(f)) {
         const n = parseFloat(raw);
         measurements[f] = Number.isNaN(n) ? raw : n;
       } else {
@@ -53,16 +45,8 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
       }
     }
 
-    for (const row of customRows) {
-      const k = row.key.trim();
-      const v = row.value.trim();
-      if (!k || !v) continue;
-      const n = parseFloat(v);
-      measurements[k] = Number.isNaN(n) ? v : n;
-    }
-
     if (Object.keys(measurements).length === 0 && !notes.trim()) {
-      setError("Add at least one measurement or a clinical note.");
+      setError(t("common.error"));
       return;
     }
 
@@ -76,7 +60,7 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
       });
       onSaved?.();
     } catch (err) {
-      setError(err.message || "Save failed");
+      setError(err.message || t("common.error"));
     } finally {
       setSaving(false);
     }
@@ -94,23 +78,16 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-            Disease / program
+            {t("medical.disease")}
           </label>
-          <select
-            value={disease}
-            onChange={(e) => setDisease(e.target.value)}
-            className="carevia-auth-input w-full px-4 py-3 rounded-xl text-sm appearance-none"
-          >
-            {DISEASE_OPTIONS.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+          <div className="carevia-auth-input w-full px-4 py-3 rounded-xl text-sm bg-surface-container-high/30 capitalize font-semibold text-primary flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">verified</span>
+            {t(`medical.diseases.${disease.toLowerCase()}`)}
+          </div>
         </div>
         <div className="space-y-2">
           <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-            Record date
+            {t("medical.date")}
           </label>
           <input
             type="date"
@@ -124,12 +101,14 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
       {templateFields.length > 0 && (
         <div className="space-y-3">
           <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-            Suggested fields
+            {t("medical.measurements")}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {templateFields.map((f) => (
               <div key={f} className="space-y-1">
-                <label className="text-[10px] uppercase tracking-wide text-outline">{f}</label>
+                <label className="text-[10px] uppercase tracking-wide text-outline">
+                  {t(`medical.fields.${f}`, f.replace(/_/g, " "))}
+                </label>
                 <input
                   type="text"
                   value={fieldValues[f] ?? ""}
@@ -145,69 +124,15 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
         </div>
       )}
 
-      {disease === "other" && templateFields.length === 0 && (
-        <p className="text-xs text-on-surface-variant">
-          No preset fields for &quot;Other&quot;. Add custom measurements below.
-        </p>
-      )}
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-            Custom fields
-          </p>
-          <button
-            type="button"
-            onClick={addCustomRow}
-            className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-          >
-            <span className="material-symbols-outlined text-[16px]">add</span>
-            Add custom field
-          </button>
-        </div>
-        {customRows.length === 0 ? (
-          <p className="text-xs text-outline">Optional — any vital or lab label.</p>
-        ) : (
-          <ul className="space-y-2">
-            {customRows.map((row) => (
-              <li key={row.id} className="flex flex-wrap gap-2 items-center">
-                <input
-                  type="text"
-                  value={row.key}
-                  onChange={(e) => updateCustom(row.id, { key: e.target.value })}
-                  placeholder="Field name"
-                  className="carevia-auth-input flex-1 min-w-[120px] px-3 py-2 rounded-lg text-sm"
-                />
-                <input
-                  type="text"
-                  value={row.value}
-                  onChange={(e) => updateCustom(row.id, { value: e.target.value })}
-                  placeholder="Value"
-                  className="carevia-auth-input flex-1 min-w-[120px] px-3 py-2 rounded-lg text-sm"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeCustom(row.id)}
-                  className="p-2 rounded-lg text-outline hover:text-error hover:bg-error/10"
-                  aria-label="Remove row"
-                >
-                  <span className="material-symbols-outlined text-[20px]">close</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
       <div className="space-y-2">
         <label className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">
-          Clinical notes
+          {t("medical.notes")}
         </label>
         <textarea
           rows={3}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Context, medication changes, plan…"
+          placeholder={t("newPatient.notes")}
           className="carevia-auth-input w-full px-4 py-3 rounded-xl text-sm resize-y min-h-[4.5rem]"
         />
       </div>
@@ -219,10 +144,10 @@ export default function MedicalRecordForm({ patientId, onSaved, onCancel }) {
           className="carevia-btn-primary disabled:opacity-50"
         >
           <span className="material-symbols-outlined text-[18px] relative z-10">save</span>
-          {saving ? "Saving…" : "Save record"}
+          {saving ? t("common.saving") : t("medical.addRecord")}
         </button>
         <button type="button" onClick={onCancel} className="carevia-btn-secondary">
-          Cancel
+          {t("common.cancel")}
         </button>
       </div>
     </form>

@@ -1,8 +1,7 @@
 {
-  "diabetes": ["glucose", "HbA1c", "weight"],
-  "cardiology": ["blood_pressure", "heart_rate", "weight"],
-  "pulmonology": ["spo2", "peak_flow", "weight"],
-  "nephrology": ["creatinine", "egfr", "weight", "blood_pressure"],
-  "general": ["weight", "temperature", "heart_rate"],
-  "other": []
+  "diabetes": ["glucose", "HbA1c", "weight", "insulin_dosage", "notes"],
+  "cardiology": ["blood_pressure", "heart_rate", "cholesterol", "ecg_notes", "weight"],
+  "pulmonology": ["oxygen_saturation", "respiratory_rate", "peak_flow", "temperature", "notes"],
+  "nephrology": ["creatinine", "urea", "gfr", "blood_pressure", "weight"],
+  "general": ["temperature", "weight", "blood_pressure", "general_notes"]
 }

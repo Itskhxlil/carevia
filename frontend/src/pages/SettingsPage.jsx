@@ -108,12 +108,6 @@ export default function SettingsPage() {
         >
           <div className="space-y-4">
             <ToggleRow
-              label={t("settings.labResults")}
-              description={t("settings.labResultsDesc")}
-              checked={settings.notifyLabResults}
-              onChange={(v) => patch({ notifyLabResults: v })}
-            />
-            <ToggleRow
               label={t("settings.appointmentsPanel")}
               description={t("settings.appointmentsPanelDesc")}
               checked={settings.notifyAppointments}

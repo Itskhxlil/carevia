@@ -1,19 +1,17 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const styles = {
-  normal: "bg-[rgb(var(--color-secondary))]/15 text-[rgb(var(--color-secondary))] border-[rgb(var(--color-secondary))]/35",
-  warning: "bg-amber-500/15 text-amber-200 border-amber-500/35",
-  critical: "bg-error/15 text-error border-error/40",
-};
-
-const labels = {
-  normal: "Normal",
-  warning: "Warning",
-  critical: "Critical",
+  Stable: "bg-emerald-500/15 text-emerald-400 border-emerald-500/35",
+  Warning: "bg-amber-500/15 text-amber-200 border-amber-500/35",
+  Critical: "bg-error/15 text-error border-error/40",
 };
 
 export default function RecordStatusBadge({ status }) {
-  const s = styles[status] ? status : "normal";
+  const { t } = useTranslation();
+  const norm = status ? (status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()) : "Stable";
+  const s = styles[norm] ? norm : "Stable";
+  
   return (
     <span
       className={`
@@ -21,7 +19,7 @@ export default function RecordStatusBadge({ status }) {
         ${styles[s]}
       `}
     >
-      {labels[s]}
+      {t(`status.${s}`)}
     </span>
   );
 }

@@ -115,7 +115,7 @@ export default function ClinicalHeroAnimation() {
       </div>
 
       <p className="relative z-10 mt-4 mb-2 px-6 text-center text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.22em] text-outline">
-        Patient records · Labs · Clinical archive
+        Patient records · Labs · Clinical Registry
       </p>
     </div>
   );

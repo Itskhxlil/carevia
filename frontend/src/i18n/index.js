@@ -4,7 +4,6 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import en from "./en.json";
 import ar from "./ar.json";
 import fr from "./fr.json";
-import { loadSettings } from "../services/authStorage.js";
 
 const resources = {
   en: { translation: en },
@@ -12,14 +11,11 @@ const resources = {
   fr: { translation: fr },
 };
 
-const settings = loadSettings();
-
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: settings.language || "en", // Default from our settings
     fallbackLng: "en",
     interpolation: {
       escapeValue: false,
@@ -29,5 +25,14 @@ i18n
       caches: ["localStorage"],
     },
   });
+
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.dir = i18n.dir(lng);
+  document.documentElement.lang = lng;
+});
+
+// Initial load
+document.documentElement.dir = i18n.dir(i18n.language);
+document.documentElement.lang = i18n.language || 'en';
 
 export default i18n;

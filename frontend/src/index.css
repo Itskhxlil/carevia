@@ -3,137 +3,137 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════
-   CAREVIA — MEDICAL TEAL / NAVY DESIGN SYSTEM
-   Dark (default) vs Light
+   CAREVIA — MODERN MEDICAL BLUE DESIGN SYSTEM
+   Light (default) vs Dark
+   Inspired by clean Healthcare SaaS interfaces
 ═══════════════════════════════════════════════ */
 @layer base {
   html.dark {
-    /* ── Primary: Teal ── */
-    --color-primary:              13 200 175;   /* #0DC8AF */
-    --color-primary-hover:        6 177 153;    /* #06B199 */
-    --color-primary-dim:          9 150 130;    /* #099682 */
+    /* ── Primary: Clinical Blue ── */
+    --color-primary:              59 130 246;   /* Blue 500 */
+    --color-primary-hover:        37 99 235;    /* Blue 600 */
+    --color-primary-dim:          29 78 216;    /* Blue 700 */
     --color-on-primary:           255 255 255;
-    --color-primary-container:    0 70 60;
-    --color-on-primary-container: 153 240 228;
-    --color-primary-fixed:        20 184 166;
-    --color-primary-fixed-dim:    13 148 136;
+    --color-primary-container:    30 58 138;    /* Deep Blue */
+    --color-on-primary-container: 219 234 254;  /* Blue 100 */
+    --color-primary-fixed:        37 99 235;
+    --color-primary-fixed-dim:    29 78 216;
 
-    /* ── Secondary: Sky Blue ── */
-    --color-secondary:            96 200 240;   /* #60C8F0 */
-    --color-on-secondary:         0 35 55;
-    --color-secondary-container:  0 60 90;
-    --color-on-secondary-container: 175 225 255;
-    --color-secondary-fixed:      147 210 255;
-    --color-secondary-fixed-dim:  96 180 230;
-    --color-on-secondary-fixed:   0 30 50;
-    --color-on-secondary-fixed-variant: 40 80 110;
+    /* ── Secondary: Slate Blue ── */
+    --color-secondary:            148 163 184;  /* Slate 400 */
+    --color-on-secondary:         15 23 42;
+    --color-secondary-container:  51 65 85;
+    --color-on-secondary-container: 241 245 249;
+    --color-secondary-fixed:      203 213 225;
+    --color-secondary-fixed-dim:  148 163 184;
+    --color-on-secondary-fixed:   15 23 42;
+    --color-on-secondary-fixed-variant: 71 85 105;
 
-    /* ── Tertiary: Warm Gold ── */
-    --color-tertiary:             255 196 97;   /* #FFC461 */
-    --color-on-tertiary:          80 45 0;
-    --color-tertiary-container:   100 65 0;
-    --color-on-tertiary-container: 255 220 160;
-    --color-tertiary-fixed:       255 220 170;
-    --color-tertiary-fixed-dim:   255 190 100;
-    --color-on-tertiary-fixed:    70 38 0;
-    --color-on-tertiary-fixed-variant: 110 68 0;
+    /* ── Tertiary: Soft Cyan ── */
+    --color-tertiary:             34 211 238;   /* Cyan 400 */
+    --color-on-tertiary:          8 51 68;
+    --color-tertiary-container:   22 78 99;
+    --color-on-tertiary-container: 207 250 254;
+    --color-tertiary-fixed:       165 243 252;
+    --color-tertiary-fixed-dim:   34 211 238;
+    --color-on-tertiary-fixed:    8 51 68;
+    --color-on-tertiary-fixed-variant: 21 94 117;
 
-    /* ── Surface / Background: Deep Navy ── */
-    --color-background:           8 18 24;      /* Slightly more neutral dark */
-    --color-on-background:        153 240 228;  /* Light Teal */
-    --color-surface:              10 22 30;
-    --color-on-surface:           153 240 228;  /* Light Teal instead of off-white */
-    --color-surface-variant:      22 40 60;
-    --color-on-surface-variant:   160 190 220;
-    --color-surface-dim:          8 18 30;
-    --color-surface-bright:       28 50 75;
-    --color-surface-container-lowest: 5 14 24;
-    --color-surface-container-low:    15 30 48;
-    --color-surface-container:        20 38 58;
-    --color-surface-container-high:   28 50 74;
-    --color-surface-container-highest: 38 65 92;
+    /* ── Surface / Background: Deep Slate ── */
+    --color-background:           15 23 42;     /* Slate 950 */
+    --color-on-background:        241 245 249;  /* Slate 100 */
+    --color-surface:              30 41 59;     /* Slate 800 */
+    --color-on-surface:           248 250 252;  /* Slate 50 */
+    --color-surface-variant:      51 65 85;     /* Slate 700 */
+    --color-on-surface-variant:   203 213 225;  /* Slate 300 */
+    --color-surface-dim:          15 23 42;
+    --color-surface-bright:       51 65 85;
+    --color-surface-container-lowest: 10 18 35;
+    --color-surface-container-low:    30 41 59;
+    --color-surface-container:        40 55 75;
+    --color-surface-container-high:   51 65 85;
+    --color-surface-container-highest: 71 85 105;
 
     /* ── Outline ── */
-    --color-outline:              90 120 155;
-    --color-outline-variant:      30 55 80;
+    --color-outline:              100 116 139;  /* Slate 500 */
+    --color-outline-variant:      51 65 85;     /* Slate 700 */
 
     /* ── Error ── */
-    --color-error:                255 110 110;
-    --color-on-error:             100 0 5;
-    --color-error-container:      120 20 20;
-    --color-on-error-container:   255 200 200;
+    --color-error:                248 113 113;  /* Red 400 */
+    --color-on-error:             69 10 10;
+    --color-error-container:      127 29 29;
+    --color-on-error-container:   254 226 226;
 
     /* ── Inverse ── */
-    --color-inverse-primary:      0 150 130;
-    --color-inverse-surface:      210 228 245;
-    --color-inverse-on-surface:   22 40 60;
-    --color-surface-tint:         13 200 175;
+    --color-inverse-primary:      37 99 235;
+    --color-inverse-surface:      241 245 249;
+    --color-inverse-on-surface:   15 23 42;
+    --color-surface-tint:         59 130 246;
   }
 
   html:not(.dark) {
-    /* ── Primary: Teal ── */
-    --color-primary:              10 155 135;   /* #0A9B87 */
-    --color-primary-hover:        8 130 115;
-    --color-primary-dim:          6 110 96;
+    /* ── Primary: Clinical Blue ── */
+    --color-primary:              37 99 235;    /* Blue 600 */
+    --color-primary-hover:        29 78 216;    /* Blue 700 */
+    --color-primary-dim:          30 58 138;    /* Blue 800 */
     --color-on-primary:           255 255 255;
-    --color-primary-container:    180 245 235;
-    --color-on-primary-container: 0 60 52;
-    --color-primary-fixed:        13 200 175;
-    --color-primary-fixed-dim:    10 155 135;
+    --color-primary-container:    219 234 254;  /* Blue 100 */
+    --color-on-primary-container: 30 58 138;    /* Blue 900 */
+    --color-primary-fixed:        37 99 235;
+    --color-primary-fixed-dim:    29 78 216;
 
-    /* ── Secondary: Sky Blue ── */
-    --color-secondary:            14 130 190;
+    /* ── Secondary: Soft Slate ── */
+    --color-secondary:            71 85 105;    /* Slate 600 */
     --color-on-secondary:         255 255 255;
-    --color-secondary-container:  210 240 255;
-    --color-on-secondary-container: 0 50 80;
-    --color-secondary-fixed:      170 220 255;
-    --color-secondary-fixed-dim:  110 185 235;
-    --color-on-secondary-fixed:   0 40 65;
-    --color-on-secondary-fixed-variant: 30 75 110;
+    --color-secondary-container:  241 245 249;  /* Slate 100 */
+    --color-on-secondary-container: 15 23 42;   /* Slate 900 */
+    --color-secondary-fixed:      226 232 240;
+    --color-secondary-fixed-dim:  148 163 184;
+    --color-on-secondary-fixed:   15 23 42;
+    --color-on-secondary-fixed-variant: 51 65 85;
 
-    /* ── Tertiary: Warm Amber ── */
-    --color-tertiary:             220 130 0;
+    /* ── Tertiary: Medical Cyan ── */
+    --color-tertiary:             8 145 178;    /* Cyan 600 */
     --color-on-tertiary:          255 255 255;
-    --color-tertiary-container:   255 235 190;
-    --color-on-tertiary-container: 80 45 0;
-    --color-tertiary-fixed:       255 230 180;
-    --color-tertiary-fixed-dim:   240 175 60;
-    --color-on-tertiary-fixed:    68 35 0;
-    --color-on-tertiary-fixed-variant: 110 68 0;
+    --color-tertiary-container:   207 250 254;
+    --color-on-tertiary-container: 21 94 117;
+    --color-tertiary-fixed:       165 243 252;
+    --color-tertiary-fixed-dim:   8 145 178;
+    --color-on-tertiary-fixed:    21 94 117;
+    --color-on-tertiary-fixed-variant: 22 78 99;
 
-    /* ── Surface / Background: Clean White/Cream ── */
-    --color-background:           245 252 250;  /* Very light teal background */
-    --color-on-background:        0 60 52;      /* Dark Teal */
-    --color-surface:              255 255 255;
-    --color-on-surface:           0 60 52;      /* Dark Teal instead of navy */
-    --color-surface-variant:      225 238 250;
-    --color-on-surface-variant:   50 85 120;
-    --color-surface-dim:          230 242 252;
+    /* ── Surface / Background: Clean White/Gray ── */
+    --color-background:           248 250 252;  /* Slate 50 */
+    --color-on-background:        15 23 42;     /* Slate 950 */
+    --color-surface:              255 255 255;  /* Pure White */
+    --color-on-surface:           15 23 42;     /* Slate 950 */
+    --color-surface-variant:      241 245 249;  /* Slate 100 */
+    --color-on-surface-variant:   71 85 105;    /* Slate 600 */
+    --color-surface-dim:          226 232 240;  /* Slate 200 */
     --color-surface-bright:       255 255 255;
     --color-surface-container-lowest: 255 255 255;
-    --color-surface-container-low:    245 252 255;
-    --color-surface-container:        235 246 255;
-    --color-surface-container-high:   220 237 252;
-    --color-surface-container-highest: 205 228 248;
+    --color-surface-container-low:    252 253 255;
+    --color-surface-container:        248 250 252;
+    --color-surface-container-high:   241 245 249;
+    --color-surface-container-highest: 226 232 240;
 
     /* ── Outline ── */
-    --color-outline:              120 155 190;
-    --color-outline-variant:      190 215 235;
+    --color-outline:              148 163 184;  /* Slate 400 */
+    --color-outline-variant:      226 232 240;  /* Slate 200 */
 
     /* ── Error ── */
-    --color-error:                200 30 30;
+    --color-error:                220 38 38;    /* Red 600 */
     --color-on-error:             255 255 255;
-    --color-error-container:      255 220 220;
-    --color-on-error-container:   120 10 10;
+    --color-error-container:      254 226 226;
+    --color-on-error-container:   153 27 27;
 
     /* ── Inverse ── */
-    --color-inverse-primary:      13 200 175;
-    --color-inverse-surface:      18 38 60;
-    --color-inverse-on-surface:   225 240 252;
-    --color-surface-tint:         10 155 135;
+    --color-inverse-primary:      59 130 246;
+    --color-inverse-surface:      30 41 59;
+    --color-inverse-on-surface:   248 250 252;
+    --color-surface-tint:         37 99 235;
   }
 }
-
 /* ─── Material Symbols ─── */
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
@@ -165,7 +165,20 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: "Poppins", "Manrope", sans-serif;
+    font-family: "Poppins", "Outfit", sans-serif;
+  }
+
+  /* ── RTL Support for Arabic ── */
+  html[dir="rtl"] body {
+    font-family: "Tajawal", "Cairo", "Inter", sans-serif;
+  }
+  
+  html[dir="rtl"] h1, 
+  html[dir="rtl"] h2, 
+  html[dir="rtl"] h3, 
+  html[dir="rtl"] h4,
+  html[dir="rtl"] .font-headline {
+    font-family: "Cairo", "Poppins", "Outfit", sans-serif;
   }
 }
 
@@ -174,11 +187,11 @@
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(13, 200, 175, 0.35);
+    background: rgba(37, 99, 235, 0.35);
     border-radius: 2px;
   }
   html:not(.dark) ::-webkit-scrollbar-thumb {
-    background: rgba(10, 155, 135, 0.3);
+    background: rgba(37, 99, 235, 0.3);
   }
 }
 
@@ -192,16 +205,16 @@ html.carevia-kbd-hints *:focus-visible {
 ═══════════════════════════════════════════════ */
 @layer components {
 
-  /* ── Primary Button: Teal Gradient ── */
+  /* ── Primary Button: Medical Blue Gradient ── */
   .carevia-btn-primary {
     @apply relative inline-flex items-center justify-center gap-2 overflow-hidden;
-    @apply rounded-full px-6 py-3 text-sm font-bold tracking-wide text-white;
+    @apply rounded-xl px-6 py-3 text-sm font-bold tracking-wide text-white;
     background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-primary-dim)) 100%);
-    @apply shadow-[0_4px_20px_rgba(13,200,175,0.30)];
+    @apply shadow-[0_4px_20px_rgba(37,99,235,0.25)];
     @apply transition-all duration-300 ease-out;
-    @apply hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(13,200,175,0.45)];
+    @apply hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(37,99,235,0.4)];
     @apply active:translate-y-0 active:scale-[0.97];
-    border: 1px solid rgba(13, 200, 175, 0.3);
+    border: 1px solid rgba(var(--color-primary), 0.2);
   }
 
   .carevia-btn-primary::after {
@@ -220,73 +233,83 @@ html.carevia-kbd-hints *:focus-visible {
 
   /* ── Secondary Button ── */
   .carevia-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold;
     @apply bg-surface-container-high/60 backdrop-blur-md text-on-surface-variant;
     border: 1px solid rgba(var(--color-outline-variant), 0.4);
     @apply transition-all duration-300 ease-out;
     @apply hover:text-on-surface hover:bg-surface-container-high;
-    @apply hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)];
+    @apply hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)];
     @apply active:translate-y-0 active:scale-[0.97];;
   }
 
   .carevia-btn-secondary:hover {
-    border-color: rgba(13, 200, 175, 0.4);
+    border-color: rgba(var(--color-primary), 0.4);
   }
 
   /* ── Icon Button ── */
   .carevia-btn-icon {
     @apply relative inline-flex items-center justify-center rounded-xl p-2;
     @apply text-on-surface-variant bg-surface-container-high/30 backdrop-blur-sm;
-    border: 1px solid rgba(var(--color-outline-variant), 0.3);
+    border: 1px solid rgba(var(--color-outline-variant), 0.8);
     @apply transition-all duration-300 ease-out;
     @apply hover:scale-110 hover:text-on-surface hover:bg-surface-container-high/70;
     @apply active:scale-95;
   }
 
   .carevia-btn-icon:hover {
-    border-color: rgba(13, 200, 175, 0.4);
-    box-shadow: 0 4px 16px rgba(13, 200, 175, 0.12);
+    border-color: rgba(var(--color-primary), 0.4);
+    box-shadow: 0 4px 16px rgba(var(--color-primary), 0.12);
   }
 
-  /* ── Glass Card ── */
+  /* ── Professional Card ── */
   .carevia-glass-card {
-    @apply rounded-2xl bg-surface-container-lowest/80 backdrop-blur-xl;
-    @apply shadow-[0_8px_40px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.06)];
-    border: 1px solid rgba(var(--color-outline-variant), 0.25);
+    @apply rounded-2xl bg-surface-container-lowest backdrop-blur-xl;
+    @apply shadow-[0_10px_40px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.05)];
+    border: 1px solid rgba(var(--color-outline-variant), 0.2);
   }
 
   html:not(.dark) .carevia-glass-card {
-    @apply bg-white/90;
-    @apply shadow-[0_4px_30px_rgba(10,155,135,0.08),inset_0_1px_0_rgba(255,255,255,0.9)];
-    border: 1px solid rgba(var(--color-outline-variant), 0.4);
+    @apply bg-white;
+    @apply shadow-[0_8px_30px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,0.9)];
+    border: 1px solid rgba(var(--color-outline-variant), 0.75);
   }
 
   /* ── Subtle Glass ── */
   .carevia-glass-subtle {
     @apply rounded-xl bg-surface-container-low/50 backdrop-blur-md;
-    border: 1px solid rgba(var(--color-outline-variant), 0.18);
+    border: 1px solid rgba(var(--color-outline-variant), 0.5);
   }
 
   html:not(.dark) .carevia-glass-subtle {
     @apply bg-white/70;
-    border: 1px solid rgba(var(--color-outline-variant), 0.35);
+    border: 1px solid rgba(var(--color-outline-variant), 0.6);
   }
 
-  /* ── Auth Input ── */
+  /* ── Standard Input ── */
+  .carevia-input {
+    @apply w-full px-4 py-3 rounded-xl text-sm transition-all duration-200 outline-none;
+    @apply bg-surface-container-low/60 backdrop-blur-sm text-on-surface;
+    @apply placeholder:text-outline/60;
+    border: 1.5px solid rgba(var(--color-outline-variant), 0.8);
+  }
+
+  .carevia-input:focus {
+    @apply ring-4 ring-primary/10;
+    border-color: rgba(var(--color-primary), 0.5);
+  }
+
+  html.dark .carevia-input {
+    border-color: rgba(var(--color-outline-variant), 0.25);
+  }
+
+  html.dark .carevia-input:focus {
+    border-color: rgba(var(--color-primary), 0.6);
+  }
+
+  /* ── Auth Input (Slightly different style if needed) ── */
   .carevia-auth-input {
-    @apply bg-surface-container-low/55 backdrop-blur-sm;
-    border: 1px solid rgba(var(--color-outline-variant), 0.3);
-    @apply transition-all duration-200;
-  }
-
-  .carevia-auth-input:focus {
-    border-color: rgba(13, 200, 175, 0.5);
-    box-shadow: 0 0 0 3px rgba(13, 200, 175, 0.12);
-  }
-
-  /* ── Profile Avatar ── */
-  .carevia-profile-avatar {
-    animation: carevia-avatar-soft 4s ease-in-out infinite;
+    @apply carevia-input;
+    @apply bg-surface-container-low/55;
   }
 
   /* ── Sidebar Nav Link ── */
@@ -299,43 +322,36 @@ html.carevia-kbd-hints *:focus-visible {
   }
 
   .carevia-nav-link:hover {
-    background: rgba(13, 200, 175, 0.08);
-    border-color: rgba(13, 200, 175, 0.15);
-    color: rgb(13, 200, 175);
+    background: rgba(var(--color-primary), 0.08);
+    border-color: rgba(var(--color-primary), 0.15);
+    color: rgb(var(--color-primary));
   }
 
   .carevia-nav-link-active {
-    color: rgb(13, 200, 175) !important;
+    color: rgb(var(--color-primary)) !important;
     @apply font-semibold;
-    background: rgba(13, 200, 175, 0.12);
-    border: 1px solid rgba(13, 200, 175, 0.25);
-    box-shadow: 0 0 20px rgba(13, 200, 175, 0.10), inset 0 0 20px rgba(13, 200, 175, 0.04);
+    background: rgba(var(--color-primary), 0.1);
+    border: 1px solid rgba(var(--color-primary), 0.2);
+    box-shadow: 0 0 20px rgba(var(--color-primary), 0.05);
   }
 
   /* ── Background Mesh ── */
   .carevia-mesh-bg {
     background:
-      radial-gradient(ellipse 70% 45% at 15% -5%, rgba(13,200,175,0.12), transparent 55%),
-      radial-gradient(ellipse 55% 35% at 88% 15%, rgba(96,200,240,0.08), transparent 50%),
-      radial-gradient(ellipse 45% 30% at 8% 92%, rgba(13,150,130,0.07), transparent 45%);
-  }
-
-  html:not(.dark) .carevia-mesh-bg {
-    background:
-      radial-gradient(ellipse 70% 45% at 15% -5%, rgba(10,155,135,0.07), transparent 55%),
-      radial-gradient(ellipse 55% 35% at 88% 15%, rgba(14,130,190,0.05), transparent 50%),
-      radial-gradient(ellipse 45% 30% at 8% 92%, rgba(13,200,175,0.04), transparent 45%);
+      radial-gradient(ellipse 70% 45% at 15% -5%, rgba(var(--color-primary),0.08), transparent 55%),
+      radial-gradient(ellipse 55% 35% at 88% 15%, rgba(var(--color-tertiary),0.05), transparent 50%),
+      radial-gradient(ellipse 45% 30% at 8% 92%, rgba(var(--color-primary-dim),0.05), transparent 45%);
   }
 
   /* ── Landing Hero Background ── */
   .carevia-hero-bg {
-    background: linear-gradient(145deg, #062535 0%, #0A3D30 40%, #073525 100%);
+    background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
     position: relative;
     overflow: hidden;
   }
 
   html:not(.dark) .carevia-hero-bg {
-    background: linear-gradient(145deg, #0A4A38 0%, #0D6B55 50%, #0A5945 100%);
+    background: linear-gradient(145deg, #F8FAFC 0%, #EFF6FF 100%);
   }
 
   .carevia-hero-bg::before {
@@ -351,8 +367,7 @@ html.carevia-kbd-hints *:focus-visible {
   /* ── Stat Circle ── */
   .carevia-stat-circle {
     @apply w-28 h-28 rounded-full flex flex-col items-center justify-center;
-    background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-primary-dim)) 100%);
-    @apply shadow-[0_8px_32px_rgba(13,200,175,0.35)];
+    @apply shadow-[0_8px_32px_rgba(var(--color-primary),0.25)];
     animation: carevia-stat-breathe 3s ease-in-out infinite;
   }
 
@@ -374,8 +389,8 @@ html.carevia-kbd-hints *:focus-visible {
 
   html:not(.dark) .carevia-booking-bar {
     background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(10, 155, 135, 0.15);
-    box-shadow: 0 8px 40px rgba(10, 155, 135, 0.12);
+    border: 1px solid rgba(var(--color-primary), 0.15);
+    @apply shadow-[0_10px_40px_rgba(37,99,235,0.08)];
   }
 
   /* ── Landing Card ── */
@@ -389,9 +404,9 @@ html.carevia-kbd-hints *:focus-visible {
   }
 
   html:not(.dark) .carevia-landing-card {
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(10, 155, 135, 0.15);
-    @apply shadow-[0_4px_24px_rgba(10,155,135,0.08)];
+    @apply bg-white;
+    border: 1px solid rgba(var(--color-outline-variant), 0.5);
+    @apply shadow-[0_8px_30px_rgba(15,23,42,0.04)];
   }
 
   /* ── Pulse rings ── */
@@ -433,8 +448,8 @@ html.carevia-kbd-hints *:focus-visible {
 }
 
 @keyframes carevia-hub-breathe {
-  0%, 100% { box-shadow: 0 0 28px rgba(13,200,175,0.2); }
-  50%       { box-shadow: 0 0 52px rgba(13,200,175,0.4); }
+  0%, 100% { box-shadow: 0 0 28px rgba(var(--color-primary),0.2); }
+  50%       { box-shadow: 0 0 52px rgba(var(--color-primary),0.4); }
 }
 
 @keyframes carevia-ecg-flow {
@@ -447,13 +462,13 @@ html.carevia-kbd-hints *:focus-visible {
 }
 
 @keyframes carevia-avatar-soft {
-  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(13,200,175,0.25); }
-  50%       { transform: scale(1.03); box-shadow: 0 0 0 6px rgba(13,200,175,0.08); }
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(var(--color-primary),0.25); }
+  50%       { transform: scale(1.03); box-shadow: 0 0 0 6px rgba(var(--color-primary),0.08); }
 }
 
 @keyframes carevia-stat-breathe {
-  0%, 100% { box-shadow: 0 8px 32px rgba(13,200,175,0.35); }
-  50%       { box-shadow: 0 12px 48px rgba(13,200,175,0.55); }
+  0%, 100% { box-shadow: 0 8px 32px rgba(var(--color-primary),0.3); }
+  50%       { box-shadow: 0 12px 48px rgba(var(--color-primary),0.5); }
 }
 
 @keyframes carevia-float {

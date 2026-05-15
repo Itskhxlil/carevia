@@ -11,12 +11,11 @@ const LEGACY_SPEC = "carevia_doctor_specialty";
 
 export function getDefaultSettings() {
   return {
-    notifyLabResults: true,
     notifyAppointments: true,
     notifyCriticalAlerts: true,
     compactTables: false,
     showKeyboardHints: true,
-    themeMode: "dark",
+    themeMode: "light",
   };
 }
 

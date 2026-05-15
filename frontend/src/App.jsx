@@ -9,7 +9,6 @@ import NewPatientPage from "./pages/NewPatientPage.jsx";
 import PatientDetailPage from "./pages/PatientDetailPage.jsx";
 import PatientEditPage from "./pages/PatientEditPage.jsx";
 import AppointmentsPage from "./pages/AppointmentsPage.jsx";
-import LabsPage from "./pages/LabsPage.jsx";
 import RecordsPage from "./pages/RecordsPage.jsx";
 import AnalyticsPage from "./pages/AnalyticsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
@@ -42,7 +41,6 @@ export default function App() {
           <Route path="patients/:patientId" element={<PatientDetailPage />} />
           <Route path="patients" element={<PatientsPage />} />
           <Route path="appointments" element={<AppointmentsPage />} />
-          <Route path="labs" element={<LabsPage />} />
           <Route path="records" element={<RecordsPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="profile" element={<ProfilePage />} />

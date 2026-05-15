@@ -1,31 +1,28 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import logo from "../../assets/logo.png";
 
 export default function LandingFooter() {
+  const { t } = useTranslation();
   return (
-    <footer className="border-t border-outline-variant/20 py-10 relative">
+    <footer className="border-t border-outline-variant/80 py-10 relative bg-background">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           {/* Logo */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center">
-              <span className="material-symbols-outlined text-white text-[13px]">favorite</span>
-            </div>
-            <div>
-              <span className="text-sm font-bold text-on-surface">Carevia</span>
-              <span className="text-[9px] text-teal-400/50 uppercase tracking-wider ml-1.5">Clinical Archivist</span>
-            </div>
+          <div className="flex items-center shrink-0">
+            <img src={logo} alt="Carevia" className="h-24 w-auto opacity-90 hover:opacity-100 transition-opacity" />
           </div>
 
           {/* Links */}
           <div className="flex items-center gap-6 text-[12px] text-on-surface-variant">
-            <a href="#features" className="hover:text-primary transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-primary transition-colors">Workflow</a>
-            <a href="#problems" className="hover:text-primary transition-colors">Why Carevia</a>
+            <a href="#features" className="hover:text-primary transition-colors">{t("footer.features")}</a>
+            <a href="#how-it-works" className="hover:text-workflow transition-colors">{t("footer.workflow")}</a>
+            <a href="#problems" className="hover:text-primary transition-colors">{t("footer.why")}</a>
           </div>
 
           {/* Copyright */}
           <p className="text-[11px] text-outline">
-            © 2026 Carevia. All patient data stored locally.
+            {t("footer.copyright")}
           </p>
         </div>
       </div>

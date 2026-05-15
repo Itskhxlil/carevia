@@ -1,15 +1,16 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 /* ─────────────────────────────────────────────
    StatCard — improved KPI card with icons & gradients
 ─────────────────────────────────────────────── */
 export function StatCard({ icon, label, value, delta, positive = true, color = "primary" }) {
   const colorMap = {
-    primary:   "from-teal-500/20 to-teal-500/5 text-teal-400 border-teal-500/20 shadow-teal-500/5",
-    secondary: "from-sky-500/20 to-sky-500/5 text-sky-400 border-sky-500/20 shadow-sky-500/5",
-    tertiary:  "from-amber-500/20 to-amber-500/5 text-amber-400 border-amber-500/20 shadow-amber-500/5",
-    error:     "from-rose-500/20 to-rose-500/5 text-rose-400 border-rose-500/20 shadow-rose-500/5",
-    success:   "from-emerald-500/20 to-emerald-500/5 text-emerald-400 border-emerald-500/20 shadow-emerald-500/5",
+    primary:   "from-teal-500/20 to-teal-500/5 text-teal-400 border-teal-500/40 shadow-teal-500/5",
+    secondary: "from-sky-500/20 to-sky-500/5 text-sky-400 border-sky-500/40 shadow-sky-500/5",
+    tertiary:  "from-amber-500/20 to-amber-500/5 text-amber-400 border-amber-500/40 shadow-amber-500/5",
+    error:     "from-rose-500/20 to-rose-500/5 text-rose-400 border-rose-500/40 shadow-rose-500/5",
+    success:   "from-emerald-500/20 to-emerald-500/5 text-emerald-400 border-emerald-500/40 shadow-emerald-500/5",
   };
 
   const c = colorMap[color] || colorMap.primary;
@@ -44,7 +45,7 @@ export function StatCard({ icon, label, value, delta, positive = true, color = "
         <p className="text-2xl font-black font-headline text-on-surface tracking-tight">
           {value}
         </p>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{label}</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-outline mt-1">{label}</p>
       </div>
 
       {/* Decorative background glow */}
@@ -58,11 +59,11 @@ export function StatCard({ icon, label, value, delta, positive = true, color = "
 ─────────────────────────────────────────────── */
 export function MedicalCard({ title, children, icon, accent = "primary" }) {
   const accentMap = {
-    primary:   { color: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/20" },
-    secondary: { color: "text-sky-400",  bg: "bg-sky-500/10",  border: "border-sky-500/20" },
-    tertiary:  { color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20" },
-    error:     { color: "text-rose-400",  bg: "bg-rose-500/10",  border: "border-rose-500/20" },
-    success:   { color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
+    primary:   { color: "text-teal-500", bg: "bg-teal-500/10", border: "border-teal-500/40" },
+    secondary: { color: "text-sky-500",  bg: "bg-sky-500/10",  border: "border-sky-500/40" },
+    tertiary:  { color: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/40" },
+    error:     { color: "text-rose-500",  bg: "bg-rose-500/10",  border: "border-rose-500/40" },
+    success:   { color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/40" },
   };
 
   const a = accentMap[accent] || accentMap.primary;
@@ -70,8 +71,8 @@ export function MedicalCard({ title, children, icon, accent = "primary" }) {
   return (
     <div
       className={`
-        bg-slate-900/40 backdrop-blur-md rounded-2xl p-6 border ${a.border}
-        transition-all duration-300 hover:bg-slate-900/60 group
+        bg-surface-container/40 backdrop-blur-md rounded-2xl p-6 border ${a.border}
+        transition-all duration-300 hover:bg-surface-container/60 group
       `}
     >
       <div className="flex items-center gap-3 mb-5">
@@ -90,11 +91,11 @@ export function MedicalCard({ title, children, icon, accent = "primary" }) {
 /* ─────────────────────────────────────────────
    InfoRow — stylized key-value row
 ─────────────────────────────────────────────── */
-export function InfoRow({ label, value, mono = false, color = "white" }) {
+export function InfoRow({ label, value, mono = false, color = "on-surface" }) {
   return (
-    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-slate-800/40 last:border-0">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 shrink-0 mt-0.5">{label}</span>
-      <span className={`text-sm ${color === 'white' ? 'text-slate-200' : 'text-' + color} text-right leading-tight ${mono ? "font-mono" : "font-medium"}`}>
+    <div className="flex items-start justify-between gap-4 py-2.5 border-b border-outline-variant/40 last:border-0">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-outline shrink-0 mt-0.5">{label}</span>
+      <span className={`text-sm text-${color} text-right leading-tight ${mono ? "font-mono" : "font-medium"}`}>
         {value}
       </span>
     </div>
@@ -105,14 +106,16 @@ export function InfoRow({ label, value, mono = false, color = "white" }) {
    StatusChip — medical status colors
 ─────────────────────────────────────────────── */
 export function StatusChip({ status }) {
+  const { t } = useTranslation();
   const styles = {
-    Active:     "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
-    Stable:     "bg-teal-500/15 text-teal-400 border-teal-500/20",
-    Pending:    "bg-amber-500/15 text-amber-400 border-amber-500/20",
-    Critical:   "bg-rose-500/15 text-rose-400 border-rose-500/20",
-    Discharged: "bg-slate-700/20 text-slate-400 border-slate-700/30",
+    Active:     "bg-emerald-500/15 text-emerald-500 border-emerald-500/40",
+    Stable:     "bg-emerald-500/15 text-emerald-500 border-emerald-500/40",
+    Pending:    "bg-amber-500/15 text-amber-500 border-amber-500/40",
+    Critical:   "bg-rose-500/15 text-rose-500 border-rose-500/40",
+    Discharged: "bg-surface-variant text-outline border-outline-variant/80",
     Normal:     "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
     Warning:    "bg-amber-500/15 text-amber-400 border-amber-500/20",
+    High:       "bg-amber-500/15 text-amber-400 border-amber-500/20",
   };
 
   const s = styles[status] || styles["Stable"];
@@ -124,7 +127,7 @@ export function StatusChip({ status }) {
         px-2.5 py-1 rounded-lg border ${s}
       `}
     >
-      {status}
+      {t(`status.${status}`, status)}
     </span>
   );
 }

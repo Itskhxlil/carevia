@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   CartesianGrid,
   Line,
@@ -17,17 +18,13 @@ const tooltipStyle = {
   color: "#e0e3e5",
 };
 
-function humanKey(key) {
-  return String(key)
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
 export default function FlexibleVitalChart({ title, data, chartType }) {
+  const { t } = useTranslation();
+
   if (!data?.length) {
     return (
       <div className="carevia-glass-subtle rounded-xl p-6 text-center text-sm text-outline">
-        Not enough points for {humanKey(title)}.
+        {t("common.notEnoughData")}
       </div>
     );
   }
@@ -37,7 +34,7 @@ export default function FlexibleVitalChart({ title, data, chartType }) {
   return (
     <div className="carevia-glass-card p-4 sm:p-6 w-full min-h-[240px]">
       <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">
-        {humanKey(title)}
+        {t(`medical.fields.${title}`, title.replace(/_/g, " "))}
       </p>
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
@@ -57,9 +54,9 @@ export default function FlexibleVitalChart({ title, data, chartType }) {
           <Tooltip
             contentStyle={tooltipStyle}
             formatter={(value, name) => {
-              if (isBp && name === "secondary") return [value, "Diastolic"];
-              if (isBp) return [value, "Systolic"];
-              return [value, humanKey(title)];
+              if (isBp && name === "secondary") return [value, t("medical.fields.diastolic")];
+              if (isBp) return [value, t("medical.fields.systolic")];
+              return [value, t(`medical.fields.${title}`, title.replace(/_/g, " "))];
             }}
           />
           <Line
@@ -81,7 +78,7 @@ export default function FlexibleVitalChart({ title, data, chartType }) {
         </LineChart>
       </ResponsiveContainer>
       <p className="text-[10px] text-outline mt-1 text-center">
-        {isBp ? "Systolic / diastolic (mmHg)" : "Trend over visit dates"}
+        {isBp ? `${t("medical.fields.systolic")} / ${t("medical.fields.diastolic")} (mmHg)` : t("medical.fields.trendLine")}
       </p>
     </div>
   );
